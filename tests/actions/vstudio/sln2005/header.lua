@@ -77,3 +77,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 		]]
 	end
+
+
+	function suite.On2015()
+		_ACTION = "vs2015"
+		prepare()
+		test.capture [[
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+		]]
+	end
