@@ -29,7 +29,7 @@
 		if file == nil then
 			return dirs
 		end
-		for line in file:lines() do
+		for line in io.lines(conf_file) do
 			-- ignore comments
 			first = line:find("#", 1, true)
 			if first ~= nil then

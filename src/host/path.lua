@@ -336,14 +336,22 @@ path.normalize=wpath.normalize
 
 path.translate=function(a,b)
 
+	if type(a)=="table" then
+		local t={}
+		for i,v in ipairs(a) do
+			t[i]=path.translate(v,b)
+		end
+		return t
+	end
 	
 	b=b or "\\"
 	local r=a
 	
+--	os.print("FUNCTION","path."..debug.getinfo(1).name,a,b)
+
 	if b=="\\" then r=a:gsub("/" ,"\\") end
 	if b=="/"  then r=a:gsub("\\","/")  end
 	
---	print("FUNCTION","path."..debug.getinfo(1).name,a,b,r)
 
 	return r
 	
@@ -353,17 +361,9 @@ end
 -- return pathdir,pathfile
 path._splitpath=function(p)
 
-	local idx=p:match("^.*()/")
+	local r=wpath.parse(p)
 	
-	if idx then
-	
-		return p:sub(1,idx) , p:sub(idx+1)
-
-	else
-	
-		return "",p
-	
-	end
+	return r.dir or "" , r.file or ""
 
 end
 

@@ -27,9 +27,21 @@ os.matchstart=function(p)
 	
 	it.p=p
 	it.pd,it.pf=path._splitpath(p)
-	pcall( function() it.dir_func,it.dir_data=lfs.dir(it.pd) end )
 
+
+
+	pcall( function() it.dir_func,it.dir_data=lfs.dir(it.pd) end )
+--ass
 -- very very simple glob hack, any other special character will messup
+
+
+
+
+
+
+
+
+
 	it.pf=it.pf:gsub("%.","%.")
 	it.pf=it.pf:gsub("%*",".*")
 	it.pf=it.pf:gsub("%?",".")
