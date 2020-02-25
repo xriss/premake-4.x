@@ -7,11 +7,17 @@ I've renamed it to puremake so as not to confuse it with premake5. My
 intent is to keep it compatible with premake4 but wrap it up into more 
 of a lua module or rock for easy install.
 
-The only binary dependency is a version of lua (5.1 or above and with 
-LuaJIT recommended) and the lua-filesystem (lfs) library.
+The only binary dependency is a version of lua (5.1 or above, LuaJIT is 
+recommended) and the lua-filesystem (lfs) library.
 
 Prebuilt lua(jit) and lfs binaries for various OS exist and are easily 
 available as they have been stable for years.
+
+For example
+
+	./apt-get-install.sh
+
+will install lua+lfs using apt-get
 
 I'm happy with including a snapshot of premake lua in my larger 
 projects, but I'm less happy with the extra dependency of requiring a 
