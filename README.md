@@ -5,9 +5,7 @@ LuaJIT recommended) and the lua-filesystem (lfs) library this seems a
 pretty basic minimum that is generally available on most operating 
 systems.
 
-Plenty of prebuilt binaries for various OS exist and are easily 
-available as most importantly they have not changed in years so are not 
-going to be out of date.
+Plenty of prebuilt lua and lfs binaries for various OS exist and are easily available as most importantly they have not changed in years so are not going to be out of date.
 
 Most of the important changes that happen to premake are all small lua 
 script fixes and getting the version that your project needs can be a 
