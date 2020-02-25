@@ -403,7 +403,17 @@ path.join=function(...)
 	if aa[1]==nil then return "." end
 	if aa[1]=="" then aa[1]="." end
 
-	local n=path.normalize(table.concat(aa,"/"))
+	local n=""
+	for i,v in ipairs(aa) do
+		if path.isabsolute(v) then
+			n=v
+		else
+			if n~="" then n=n.."/" end
+			n=n..v
+		end
+	end
+	
+	n=path.normalize(n)
 --	os.print("FUNCTION","path."..debug.getinfo(1).name,n)
 	
 	return n
