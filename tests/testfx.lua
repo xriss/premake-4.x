@@ -30,8 +30,8 @@
 	function test.capture(expected)
 		local actual = io.endcapture()
 
-		local ait = actual:gfind("(.-)" .. io.eol)
-		local eit = expected:gfind("(.-)\n")
+		local ait = actual:gmatch("(.-)" .. io.eol)
+		local eit = expected:gmatch("(.-)\n")
 
 		local linenum = 1
 		local atxt = ait()
@@ -66,7 +66,7 @@
 
 	function test.fail(format, ...)
 		-- convert nils into something more usefuls
-		for i = 1, arg.n do
+		for i = 1, #arg do
 			if (arg[i] == nil) then
 				arg[i] = "(nil)"
 			elseif (type(arg[i]) == "table") then
