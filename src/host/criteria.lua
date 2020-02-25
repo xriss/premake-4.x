@@ -2,7 +2,7 @@
 criteria=criteria or {}
 
 
-criteria._delete=function() print("FUNCTION","criteria."..debug.getinfo(1).name) end
+criteria._delete=function() os.print("FUNCTION","criteria."..debug.getinfo(1).name) end
 
 
 criteria._compile=function(input)
@@ -55,7 +55,7 @@ end
 
 criteria.matches=function(patterns, context)
 
---	print("FUNCTION","criteria."..debug.getinfo(1).name,patterns,context)
+--	os.print("FUNCTION","criteria."..debug.getinfo(1).name,patterns,context)
 --for n,v in pairs(context) do print(n,v) end
 
 	local matched=false

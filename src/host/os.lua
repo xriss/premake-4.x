@@ -136,21 +136,21 @@ end
 
 --[[
 
-os.chmod=function() print("FUNCTION","os."..debug.getinfo(1).name) end
-os.copyfile=function() print("FUNCTION","os."..debug.getinfo(1).name) end
-os._is64bit=function() print("FUNCTION","os."..debug.getinfo(1).name) end
-os.isdir=function() print("FUNCTION","os."..debug.getinfo(1).name) end
+os.chmod=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
+os.copyfile=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
+os._is64bit=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
+os.isdir=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
 
-os.getversion=function() print("FUNCTION","os."..debug.getinfo(1).name) end
+os.getversion=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
 
-os.islink=function() print("FUNCTION","os."..debug.getinfo(1).name) end
+os.islink=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
 
 
-os.mkdir=function() print("FUNCTION","os."..debug.getinfo(1).name) end
-os.realpath=function() print("FUNCTION","os."..debug.getinfo(1).name) end
-os.rmdir=function() print("FUNCTION","os."..debug.getinfo(1).name) end
-os.stat=function() print("FUNCTION","os."..debug.getinfo(1).name) end
-os.writefile_ifnotequal=function() print("FUNCTION","os."..debug.getinfo(1).name) end
+os.mkdir=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
+os.realpath=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
+os.rmdir=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
+os.stat=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
+os.writefile_ifnotequal=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
 
 ]]
 
@@ -178,14 +178,14 @@ os.matchstart=function(p)
 	it.pf=it.pf:gsub("%*",".*")
 	it.pf=it.pf:gsub("%?",".")
 
---	print("FUNCTION","os."..debug.getinfo(1).name,p,it.pd,it.pf)
+--	os.print("FUNCTION","os."..debug.getinfo(1).name,p,it.pd,it.pf)
 		
 	return it
 end
 os.matchdone=function()end
 
 os.matchnext=function(it)
---	print("FUNCTION","os."..debug.getinfo(1).name,it)
+--	os.print("FUNCTION","os."..debug.getinfo(1).name,it)
 	
 	if not it.dir_func then return nil end -- no dir
 	
@@ -203,7 +203,7 @@ end
 
 os.matchname=function(it)
 
---	print("FUNCTION","os."..debug.getinfo(1).name,it.pd..it.filename)
+--	os.print("FUNCTION","os."..debug.getinfo(1).name,it.pd..it.filename)
 	
 	return it.filename	
 
@@ -213,7 +213,7 @@ end
 
 os.matchisfile=function(it)
 
---	print("FUNCTION","os."..debug.getinfo(1).name,it.pd..it.filename,os.isfile( os.matchname(it)))
+--	os.print("FUNCTION","os."..debug.getinfo(1).name,it.pd..it.filename,os.isfile( os.matchname(it)))
 	
 	return os.isfile( it.pd..it.filename )
 
@@ -226,7 +226,7 @@ os.uuid=function()
 		math.random(0,0xffff),math.random(0,0xffff),math.random(0,0xffff),
 		math.random(0,0xffff),math.random(0,0xffff),math.random(0,0xffff))
 		
---	print("FUNCTION","os."..debug.getinfo(1).name,r)
+--	os.print("FUNCTION","os."..debug.getinfo(1).name,r)
 
 	return r
 end
@@ -235,7 +235,7 @@ end
 
 os.getcwd=function()
 
---	print("FUNCTION","os."..debug.getinfo(1).name)
+--	os.print("FUNCTION","os."..debug.getinfo(1).name)
 	
 	return lfs.currentdir()
 	
@@ -245,7 +245,7 @@ os.isfile=function(a)
 
 	local r=lfs.attributes(a,'mode')=="file"
 
---	print("FUNCTION","os."..debug.getinfo(1).name,a,r)
+--	os.print("FUNCTION","os."..debug.getinfo(1).name,a,r)
 	
 	return r
 end
@@ -263,7 +263,7 @@ os.locate=function(...)
 		end
 		if r then return r end
 	end
---	print("FUNCTION","os."..debug.getinfo(1).name,a,r)
+--	os.print("FUNCTION","os."..debug.getinfo(1).name,a,r)
 
 	return nil
 end

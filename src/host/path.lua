@@ -404,7 +404,7 @@ path.join=function(...)
 	if aa[1]=="" then aa[1]="." end
 
 	local n=path.normalize(table.concat(aa,"/"))
---	print("FUNCTION","path."..debug.getinfo(1).name,n)
+--	os.print("FUNCTION","path."..debug.getinfo(1).name,n)
 	
 	return n
 end
@@ -418,7 +418,7 @@ path.isabsolute=function(a)
 	
 	local r= ( c1=="/" or c1=="\\" or c1=="$" or (c1=="\"" and c2=="$") or (c2==":") )
 
---	print("FUNCTION","path."..debug.getinfo(1).name,a,r)
+--	os.print("FUNCTION","path."..debug.getinfo(1).name,a,r)
 	
 	return r
 	
@@ -432,7 +432,7 @@ path.wildcards=function(s)
 	r=r:gsub("([%+%.%-%^%$%(%)%%])",function(a) return "%"..a end)
 	r=r:gsub("(%*+)",function(a) if a=="**" then return "[^/]*" end return ".*" end)
 
---	print("FUNCTION","path."..debug.getinfo(1).name,s,r)
+--	os.print("FUNCTION","path."..debug.getinfo(1).name,s,r)
 	
 	return s
 	
