@@ -1,22 +1,23 @@
-#An attempt to provide a full version of premake in pure lua.
+puremake is a version of premake4 in pure lua.
+----------------------------------------------
+
+See https://premake.github.io/ for premake4 documentation.
+
+I've renamed it to puremake so as not to confuse it with premake5. My 
+intent is to keep it compatible with premake4 but wrap it up into more 
+of a lua module or rock for easy install.
 
 The only binary dependency is a version of lua (5.1 or above and with 
-LuaJIT recommended) and the lua-filesystem (lfs) library this seems a 
-pretty basic minimum that is generally available on most operating 
-systems.
+LuaJIT recommended) and the lua-filesystem (lfs) library.
 
-Plenty of prebuilt lua and lfs binaries for various OS exist and are easily available as most importantly they have not changed in years so are not going to be out of date.
+Prebuilt lua(jit) and lfs binaries for various OS exist and are easily 
+available as they have been stable for years.
 
-Most of the important changes that happen to premake are all small lua 
-script fixes and getting the version that your project needs can be a 
-pain. Often the only way to be sure is to build from source.
+I'm happy with including a snapshot of premake lua in my larger 
+projects, but I'm less happy with the extra dependency of requiring a 
+premake binary or having to build one.
 
-I'm happy with including a working recent premake source in my larger 
-project, but I'm less happy with the extra build step.
+It depends on your needs, maybe the standard premake4 fat executable is 
+best for you, but I think it is nice to have puremake as a pure lua 
+premake4 option.
 
-A pure Lua versions means there is no need to build as all of premake 
-is now available in lua.
-
-Depends on your needs, maybe the standard premake fat executable is 
-best for you, but I think it is nice to have pure lua as a premake 
-option.
