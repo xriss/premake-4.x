@@ -300,7 +300,7 @@ wpath.relative=function(pa,pb)
 		end
 	end
 	
-	if match==1 then -- no match
+	if match==1 or ( match==2 and a[1]=="" )  then -- no match
 		return pb -- just return full path
 	end
 
