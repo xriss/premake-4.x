@@ -19,10 +19,14 @@ For example
 
 will install luajit+lfs using apt-get
 
-I'm happy with including a snapshot of puremake lua code in my larger 
-projects, but I'm less happy with the extra dependency of requiring a 
-premake binary or having to build one.
+	./puremake.sh
 
-It depends on your needs, maybe the standard premake4 fat executable is 
-best for you, but I think it is nice to have puremake as a pure lua 
-premake4 option.
+will run premake4 using the installed luajit
+
+I'm happy to including a snapshot of premake4 lua code in my larger 
+projects, but I'm less happy with the extra dependency of requiring a 
+premake binary.
+
+It all depends on your needs, maybe the standard premake4 fat 
+executable is best for you, but I think it is nice to have puremake as 
+a pure lua premake4 option that reduces the complexity of my builds.
