@@ -1,7 +1,10 @@
 
 os=os or {}
 
-os.chdir=function() print("FUNCTION","os."..debug.getinfo(1).name) end
+os.chdir=function(s)
+	return lfs.chdir(s)
+end
+
 os.chmod=function() print("FUNCTION","os."..debug.getinfo(1).name) end
 os.copyfile=function() print("FUNCTION","os."..debug.getinfo(1).name) end
 os._is64bit=function() print("FUNCTION","os."..debug.getinfo(1).name) end

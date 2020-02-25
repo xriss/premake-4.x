@@ -128,6 +128,7 @@
 --
 
 	function printf(msg, ...)
+		local arg={...}
 		print(string.format(msg, unpack(arg)))
 	end
 

@@ -27,6 +27,7 @@ _ARGS={}
 _OPTIONS={}
 
 for i,v in ipairs(_ARGV) do
+print(v)
 	if (v:sub(1,1)=="/") or (v:sub(1,2)=="--") then -- args
 
 		local o=v
@@ -68,7 +69,7 @@ end
 _BASE_SCRIPT_DIR=string.gsub(_BASE_SCRIPT_DIR,"//","/")
 
 
-print(_BASE_SCRIPT_DIR)
+--print(_BASE_SCRIPT_DIR)
 
 
 
@@ -83,7 +84,7 @@ dofile( _BASE_SCRIPT_DIR .. "src/host/zip.lua" )
 
 
 
--- fake command as the dir part is used in later search patha
+-- fake command as the dir part is used in later search paths
 _PREMAKE_COMMAND	=_BASE_SCRIPT_DIR.."premake"
 
 _SCRIPT=lfs.currentdir() .. "/" .. arg[0]

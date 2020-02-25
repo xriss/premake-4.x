@@ -65,6 +65,7 @@
 
 
 	function test.fail(format, ...)
+		local arg={...}
 		-- convert nils into something more usefuls
 		for i = 1, #arg do
 			if (arg[i] == nil) then
@@ -151,7 +152,7 @@
 
 
 	function test.success(fn, ...)
-		local ok, err = pcall(fn, unpack(arg))
+		local ok, err = pcall(fn, ...)
 		if not ok then
 			test.fail("call failed: " .. err)
 		end

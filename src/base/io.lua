@@ -53,6 +53,7 @@
 --
 
 	function io.printf(msg, ...)
+		local arg={...}
 		if not io.eol then
 			io.eol = "\n"
 		end
