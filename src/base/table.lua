@@ -109,9 +109,8 @@
 --
 
 	function table.join(...)
-		local arg={...}
 		local result = { }
-		for _,t in ipairs(arg) do
+		for _,t in ipairs({...}) do
 			if type(t) == "table" then
 				for _,v in ipairs(t) do
 					table.insert(result, v)
@@ -143,9 +142,8 @@
 --
 
 	function table.merge(...)
-		local arg={...}
 		local result = { }
-		for _,t in ipairs(arg) do
+		for _,t in ipairs({arg}) do
 			if type(t) == "table" then
 				for k,v in pairs(t) do
 					result[k] = v

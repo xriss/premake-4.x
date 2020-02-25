@@ -1,9 +1,21 @@
 
 os=os or {}
 
+os.mkdir=function(s)
+	return lfs.mkdir(s)
+end
+
 os.chdir=function(s)
 	return lfs.chdir(s)
 end
+
+os.isdir=function(s)
+	local a=lfs.attributes(s)
+	if a and a.mode=="directory" then return true end
+	return false
+end
+
+--[[
 
 os.chmod=function() print("FUNCTION","os."..debug.getinfo(1).name) end
 os.copyfile=function() print("FUNCTION","os."..debug.getinfo(1).name) end
@@ -21,6 +33,8 @@ os.realpath=function() print("FUNCTION","os."..debug.getinfo(1).name) end
 os.rmdir=function() print("FUNCTION","os."..debug.getinfo(1).name) end
 os.stat=function() print("FUNCTION","os."..debug.getinfo(1).name) end
 os.writefile_ifnotequal=function() print("FUNCTION","os."..debug.getinfo(1).name) end
+
+]]
 
 os.matchstart=function(p)
 	local it={}
