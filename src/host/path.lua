@@ -213,7 +213,7 @@ wpath.normalize=function(p)
 		if ps[idx]=="." then -- just remove this one, no need to advance
 			table.remove(ps,idx)
 		elseif ps[idx]==".." then -- remove this and the previous one if we can
-			if idx>(pp.root and 2 or 1) then -- can we remove previous part
+			if idx>( ( pp.root or p:sub(1,1)=="$" ) and 2 or 1) then -- can we remove previous part
 				idx=idx-1
 				table.remove(ps,idx)
 				table.remove(ps,idx)
@@ -267,7 +267,7 @@ wpath.resolve=function(...)
 
 	local p=wpath.join(...)
 
-	if wpath.parse(p).root then -- already absolute
+	if wpath.parse(p).root or p:sub(1,1)=="$" then -- already absolute
 		return wpath.normalize(p) -- just normalize
 	end
 	

@@ -130,9 +130,9 @@
 	function os.is64bit()
 		-- Call the native code implementation. If this returns true then
 		-- we're 64-bit, otherwise do more checking locally
-		if (os._is64bit()) then
-			return true
-		end
+--		if (os._is64bit()) then
+--			return true
+--		end
 
 		-- Identify the system
 		local arch

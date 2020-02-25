@@ -74,7 +74,7 @@
 				arg[i] = "{" .. table.concat(arg[i], ", ") .. "}"
 			end
 		end
-		error(string.format(format, unpack(arg)), 3)
+		error(string.format(format, ... ), 3)
 	end
 
 
