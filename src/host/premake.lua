@@ -26,6 +26,8 @@ _ARGV=arg
 _ARGS={}
 _OPTIONS={}
 
+os.print=print
+
 for i,v in ipairs(_ARGV) do
 print(v)
 	if (v:sub(1,1)=="/") or (v:sub(1,2)=="--") then -- args
