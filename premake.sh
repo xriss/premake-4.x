@@ -1,5 +1,2 @@
-BASEPATH="$( cd "$(dirname "$0")/.." ; pwd -P )"
+BASEPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 luajit $BASEPATH/src/host/premake.lua $*
-
-
-

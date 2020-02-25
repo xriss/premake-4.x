@@ -1,1 +1,5 @@
-sudo apt-get install luajit lua-filesystem
+
+sudo apt-get -y install luajit
+
+sudo apt-get -y install lua-filesystem
+
