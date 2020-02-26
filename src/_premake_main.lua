@@ -4,12 +4,13 @@
 -- Copyright (c) 2002-2011 Jason Perkins and the Premake project
 --
 
+	local lfs = require("lfs")
 
 	local scriptfile    = "premake4.lua"
 	local shorthelp     = "Type 'premake4 --help' for help"
 	local versionhelp   = "premake4 (Premake Build Script Generator) %s"
 	
-	_WORKING_DIR        = os.getcwd()
+	_WORKING_DIR        = lfs.currentdir()
 
 
 --

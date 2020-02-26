@@ -9,6 +9,12 @@
 
 	return
 	{
+		-- host files
+		"host/string.lua",
+		"host/path.lua",
+		"host/os.lua",
+		"host/premake.lua",
+
 		-- core files
 		"base/os.lua",
 		"base/path.lua",
@@ -76,4 +82,5 @@
 
 		-- Clean action
 		"actions/clean/_clean.lua",
+
 	}

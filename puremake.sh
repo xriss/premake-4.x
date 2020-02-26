@@ -15,4 +15,4 @@ if [ -z "$PUREMAKE_LUA" ]; then
  fi
 fi
 
-$PUREMAKE_LUA $BASEPATH/src/host/premake.lua $*
+$PUREMAKE_LUA $BASEPATH/src/host/main.lua $*
