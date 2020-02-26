@@ -17,7 +17,7 @@ fo:write("#!/usr/bin/env luajit\n\n")
 
 local amalgamate=function(p)
 
-	local fp=assert(io.open(p,"rb"))
+	local fp=assert(io.open(_BASE_SCRIPT_DIR .. p,"rb"))
 	local d=fp:read("*all")
 	fp:close()
 
@@ -29,16 +29,13 @@ end
 
 
 local scripts  = dofile(_BASE_SCRIPT_DIR .. "src/_manifest.lua")
-for _,v in ipairs(scripts) do
-	amalgamate(_BASE_SCRIPT_DIR .. "/src/" .. v)
-end
-amalgamate(_BASE_SCRIPT_DIR .. "/src/" .. "_premake_main.lua")
-amalgamate(_BASE_SCRIPT_DIR .. "/src/" .. "host/main.lua")
 
+for _,v in ipairs(scripts) do
+	amalgamate("/src/"..v)
+end
+
+amalgamate("/src/_premake_main.lua")
+amalgamate("/src/host/main.lua")
 
 
 fo:close()
-
-local lfs=require("lfs")
-
-

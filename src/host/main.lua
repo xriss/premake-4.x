@@ -72,3 +72,4 @@ if not _premake_main then
 	return _premake_main(_BASE_SCRIPT_DIR.."src")
 end
 return _premake_main()
+

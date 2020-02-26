@@ -1,6 +1,6 @@
 #!/usr/bin/env luajit
 
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/host/string.lua
+-- AMALGAMATE FILE HEAD : /src/host/string.lua
 
 string=string or {}
 
@@ -23,8 +23,8 @@ string.endswith=function(a,b)
 		return b==a:sub(-#b)
 	end
 end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/host/string.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/host/path.lua
+-- AMALGAMATE FILE TAIL : /src/host/string.lua
+-- AMALGAMATE FILE HEAD : /src/host/path.lua
 --
 -- (C) 2020 Kriss@XIXs.com and released under the MIT license,
 -- see http://opensource.org/licenses/MIT for full license text.
@@ -472,8 +472,8 @@ path.wildcards=function(s)
 	return s
 	
 end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/host/path.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/host/os.lua
+-- AMALGAMATE FILE TAIL : /src/host/path.lua
+-- AMALGAMATE FILE HEAD : /src/host/os.lua
 
 os=os or {}
 
@@ -672,8 +672,8 @@ end
 	
 	
 
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/host/os.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/host/premake.lua
+-- AMALGAMATE FILE TAIL : /src/host/os.lua
+-- AMALGAMATE FILE HEAD : /src/host/premake.lua
 
 -- we really need LFS
 lfs=require("lfs")
@@ -696,8 +696,8 @@ _USER_HOME_DIR		=os.getenv("HOME")
 _WORKING_DIR		=lfs.currentdir()
 
 
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/host/premake.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/os.lua
+-- AMALGAMATE FILE TAIL : /src/host/premake.lua
+-- AMALGAMATE FILE HEAD : /src/base/os.lua
 --
 -- os.lua
 -- Additions to the OS namespace.
@@ -994,8 +994,8 @@ _WORKING_DIR		=lfs.currentdir()
 		builtin_rmdir(p)
 	end
 
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/os.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/path.lua
+-- AMALGAMATE FILE TAIL : /src/base/os.lua
+-- AMALGAMATE FILE HEAD : /src/base/path.lua
 --
 -- path.lua
 -- Path manipulation functions.
@@ -1172,8 +1172,8 @@ _WORKING_DIR		=lfs.currentdir()
 
 		return pattern
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/path.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/string.lua
+-- AMALGAMATE FILE TAIL : /src/base/path.lua
+-- AMALGAMATE FILE HEAD : /src/base/string.lua
 --
 -- string.lua
 -- Additions to Lua's built-in string functions.
@@ -1224,8 +1224,8 @@ _WORKING_DIR		=lfs.currentdir()
 	function string.startswith(haystack, needle)
 		return (haystack:find(needle, 1, true) == 1)
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/string.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/table.lua
+-- AMALGAMATE FILE TAIL : /src/base/string.lua
+-- AMALGAMATE FILE HEAD : /src/base/table.lua
 --
 -- table.lua
 -- Additions to Lua's built-in table functions.
@@ -1407,8 +1407,8 @@ _WORKING_DIR		=lfs.currentdir()
 	end
 	
 		
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/table.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/io.lua
+-- AMALGAMATE FILE TAIL : /src/base/table.lua
+-- AMALGAMATE FILE HEAD : /src/base/io.lua
 --
 -- io.lua
 -- Additions to the I/O namespace.
@@ -1493,8 +1493,8 @@ _WORKING_DIR		=lfs.currentdir()
 --
 
 	_p = io.printf
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/io.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/globals.lua
+-- AMALGAMATE FILE TAIL : /src/base/io.lua
+-- AMALGAMATE FILE HEAD : /src/base/globals.lua
 --
 -- globals.lua
 -- Global tables and variables, replacements and extensions to Lua's global functions.
@@ -1646,8 +1646,8 @@ _WORKING_DIR		=lfs.currentdir()
 		return builtin_type(t)
 	end
 	
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/globals.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/action.lua
+-- AMALGAMATE FILE TAIL : /src/base/globals.lua
+-- AMALGAMATE FILE HEAD : /src/base/action.lua
 --
 -- action.lua
 -- Work with the list of registered actions.
@@ -1807,8 +1807,8 @@ _WORKING_DIR		=lfs.currentdir()
 		end
 		return false
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/action.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/option.lua
+-- AMALGAMATE FILE TAIL : /src/base/action.lua
+-- AMALGAMATE FILE HEAD : /src/base/option.lua
 --
 -- option.lua
 -- Work with the list of registered options.
@@ -1922,8 +1922,8 @@ _WORKING_DIR		=lfs.currentdir()
 		end
 		return true
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/option.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/tree.lua
+-- AMALGAMATE FILE TAIL : /src/base/option.lua
+-- AMALGAMATE FILE HEAD : /src/base/tree.lua
 --
 -- tree.lua
 -- Functions for working with the source code tree.
@@ -2151,8 +2151,8 @@ _WORKING_DIR		=lfs.currentdir()
 			dochildren(t, fn, initialdepth)
 		end
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/tree.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/solution.lua
+-- AMALGAMATE FILE TAIL : /src/base/tree.lua
+-- AMALGAMATE FILE HEAD : /src/base/solution.lua
 --
 -- solution.lua
 -- Work with the list of solutions loaded from the script.
@@ -2266,8 +2266,8 @@ _WORKING_DIR		=lfs.currentdir()
 		cfg.name = prj.name
 		return cfg
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/solution.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/project.lua
+-- AMALGAMATE FILE TAIL : /src/base/solution.lua
+-- AMALGAMATE FILE HEAD : /src/base/project.lua
 --
 -- project.lua
 -- Functions for working with the project data.
@@ -2970,8 +2970,8 @@ _WORKING_DIR		=lfs.currentdir()
 	function premake.isdotnetproject(prj)
 		return (prj.language == "C#")
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/project.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/config.lua
+-- AMALGAMATE FILE TAIL : /src/base/project.lua
+-- AMALGAMATE FILE HEAD : /src/base/config.lua
 --
 -- configs.lua
 --
@@ -3028,8 +3028,8 @@ _WORKING_DIR		=lfs.currentdir()
 		return flags.Optimize or flags.OptimizeSize or flags.OptimizeSpeed
 	end
 
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/config.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/bake.lua
+-- AMALGAMATE FILE TAIL : /src/base/config.lua
+-- AMALGAMATE FILE HEAD : /src/base/bake.lua
 --
 -- base/bake.lua
 --
@@ -3760,8 +3760,8 @@ _WORKING_DIR		=lfs.currentdir()
 			table.insert(cfg.__fileconfigs, fcfg)
 		end
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/bake.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/api.lua
+-- AMALGAMATE FILE TAIL : /src/base/bake.lua
+-- AMALGAMATE FILE HEAD : /src/base/api.lua
 --
 -- api.lua
 -- Implementation of the solution, project, and configuration APIs.
@@ -4618,8 +4618,8 @@ _WORKING_DIR		=lfs.currentdir()
 	function newoption(opt)
 		premake.option.add(opt)
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/api.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/cmdline.lua
+-- AMALGAMATE FILE TAIL : /src/base/api.lua
+-- AMALGAMATE FILE HEAD : /src/base/cmdline.lua
 --
 -- cmdline.lua
 -- Functions to define and handle command line actions and options.
@@ -4710,8 +4710,8 @@ _WORKING_DIR		=lfs.currentdir()
 		trigger     = "version",
 		description = "Display version information"
 	}
-	-- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/cmdline.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/tools/dotnet.lua
+	-- AMALGAMATE FILE TAIL : /src/base/cmdline.lua
+-- AMALGAMATE FILE HEAD : /src/tools/dotnet.lua
 --
 -- dotnet.lua
 -- Interface for the C# compilers, all of which are flag compatible.
@@ -4807,8 +4807,8 @@ _WORKING_DIR		=lfs.currentdir()
 		elseif (cfg.kind == "SharedLib") then
 			return "Library"
 		end
-	end-- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/tools/dotnet.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/tools/gcc.lua
+	end-- AMALGAMATE FILE TAIL : /src/tools/dotnet.lua
+-- AMALGAMATE FILE HEAD : /src/tools/gcc.lua
 --
 -- gcc.lua
 -- Provides GCC-specific configuration strings.
@@ -5051,8 +5051,8 @@ _WORKING_DIR		=lfs.currentdir()
 	function premake.gcc.getcfgsettings(cfg)
 		return platforms[cfg.platform].cfgsettings
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/tools/gcc.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/tools/msc.lua
+-- AMALGAMATE FILE TAIL : /src/tools/gcc.lua
+-- AMALGAMATE FILE HEAD : /src/tools/msc.lua
 --
 -- msc.lua
 -- Interface for the MS C/C++ compiler.
@@ -5062,8 +5062,8 @@ _WORKING_DIR		=lfs.currentdir()
 	
 	premake.msc = { }
 	premake.msc.namestyle = "windows"
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/tools/msc.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/tools/ow.lua
+-- AMALGAMATE FILE TAIL : /src/tools/msc.lua
+-- AMALGAMATE FILE HEAD : /src/tools/ow.lua
 --
 -- ow.lua
 -- Provides Open Watcom-specific configuration strings.
@@ -5196,8 +5196,8 @@ _WORKING_DIR		=lfs.currentdir()
 		return result
 	end
 
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/tools/ow.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/tools/snc.lua
+-- AMALGAMATE FILE TAIL : /src/tools/ow.lua
+-- AMALGAMATE FILE HEAD : /src/tools/snc.lua
 --
 -- snc.lua
 -- Provides Sony SNC-specific configuration strings.
@@ -5364,8 +5364,8 @@ _WORKING_DIR		=lfs.currentdir()
 		end
 		return result
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/tools/snc.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/validate.lua
+-- AMALGAMATE FILE TAIL : /src/tools/snc.lua
+-- AMALGAMATE FILE HEAD : /src/base/validate.lua
 --
 -- validate.lua
 -- Tests to validate the run-time environment before starting the action.
@@ -5457,8 +5457,8 @@ _WORKING_DIR		=lfs.currentdir()
 		
 		return true
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/validate.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/help.lua
+-- AMALGAMATE FILE TAIL : /src/base/validate.lua
+-- AMALGAMATE FILE HEAD : /src/base/help.lua
 --
 -- help.lua
 -- User help, displayed on /help option.
@@ -5510,8 +5510,8 @@ _WORKING_DIR		=lfs.currentdir()
 	end
 
 
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/help.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/base/premake.lua
+-- AMALGAMATE FILE TAIL : /src/base/help.lua
+-- AMALGAMATE FILE HEAD : /src/base/premake.lua
 --
 -- premake.lua
 -- High-level processing functions.
@@ -5546,8 +5546,8 @@ _WORKING_DIR		=lfs.currentdir()
 		callback(obj)
 		f:close()
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/base/premake.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/codeblocks/_codeblocks.lua
+-- AMALGAMATE FILE TAIL : /src/base/premake.lua
+-- AMALGAMATE FILE HEAD : /src/actions/codeblocks/_codeblocks.lua
 --
 -- _codeblocks.lua
 -- Define the Code::Blocks action(s).
@@ -5587,8 +5587,8 @@ _WORKING_DIR		=lfs.currentdir()
 			premake.clean.file(prj, "%%.layout")
 		end
 	}
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/codeblocks/_codeblocks.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/codeblocks/codeblocks_workspace.lua
+-- AMALGAMATE FILE TAIL : /src/actions/codeblocks/_codeblocks.lua
+-- AMALGAMATE FILE HEAD : /src/actions/codeblocks/codeblocks_workspace.lua
 --
 -- codeblocks_workspace.lua
 -- Generate a Code::Blocks workspace.
@@ -5616,8 +5616,8 @@ _WORKING_DIR		=lfs.currentdir()
 		_p('</CodeBlocks_workspace_file>')
 	end
 
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/codeblocks/codeblocks_workspace.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/codeblocks/codeblocks_cbp.lua
+-- AMALGAMATE FILE TAIL : /src/actions/codeblocks/codeblocks_workspace.lua
+-- AMALGAMATE FILE HEAD : /src/actions/codeblocks/codeblocks_cbp.lua
 --
 -- codeblocks_cbp.lua
 -- Generate a Code::Blocks C/C++ project.
@@ -5807,8 +5807,8 @@ _WORKING_DIR		=lfs.currentdir()
 		_p('')
 		
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/codeblocks/codeblocks_cbp.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/codelite/_codelite.lua
+-- AMALGAMATE FILE TAIL : /src/actions/codeblocks/codeblocks_cbp.lua
+-- AMALGAMATE FILE HEAD : /src/actions/codelite/_codelite.lua
 --
 -- _codelite.lua
 -- Define the CodeLite action(s).
@@ -5851,8 +5851,8 @@ _WORKING_DIR		=lfs.currentdir()
 			premake.clean.file(prj, "%%.out")
 		end
 	}
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/codelite/_codelite.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/codelite/codelite_workspace.lua
+-- AMALGAMATE FILE TAIL : /src/actions/codelite/_codelite.lua
+-- AMALGAMATE FILE HEAD : /src/actions/codelite/codelite_workspace.lua
 --
 -- codelite_workspace.lua
 -- Generate a CodeLite workspace file.
@@ -5893,8 +5893,8 @@ _WORKING_DIR		=lfs.currentdir()
 		_p('</CodeLite_Workspace>')
 	end
 
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/codelite/codelite_workspace.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/codelite/codelite_project.lua
+-- AMALGAMATE FILE TAIL : /src/actions/codelite/codelite_workspace.lua
+-- AMALGAMATE FILE HEAD : /src/actions/codelite/codelite_project.lua
 --
 -- codelite_project.lua
 -- Generate a CodeLite C/C++ project file.
@@ -6061,8 +6061,8 @@ _WORKING_DIR		=lfs.currentdir()
 		
 		_p('</CodeLite_Project>')
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/codelite/codelite_project.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/make/_make.lua
+-- AMALGAMATE FILE TAIL : /src/actions/codelite/codelite_project.lua
+-- AMALGAMATE FILE HEAD : /src/actions/make/_make.lua
 --
 -- _make.lua
 -- Define the makefile action(s).
@@ -6236,8 +6236,8 @@ _WORKING_DIR		=lfs.currentdir()
 			premake.clean.file(prj, _MAKE.getmakefilename(prj, true))
 		end
 	}
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/make/_make.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/make/make_solution.lua
+-- AMALGAMATE FILE TAIL : /src/actions/make/_make.lua
+-- AMALGAMATE FILE HEAD : /src/actions/make/make_solution.lua
 --
 -- make_solution.lua
 -- Generate a solution-level makefile.
@@ -6312,8 +6312,8 @@ _WORKING_DIR		=lfs.currentdir()
 		_p(1,'@echo "For more information, see http://industriousone.com/premake/quick-start"')
 		
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/make/make_solution.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/make/make_cpp.lua
+-- AMALGAMATE FILE TAIL : /src/actions/make/make_solution.lua
+-- AMALGAMATE FILE HEAD : /src/actions/make/make_cpp.lua
 --
 -- make_cpp.lua
 -- Generate a C/C++ project makefile.
@@ -6676,8 +6676,8 @@ _WORKING_DIR		=lfs.currentdir()
 		local flags = iif(iscfile, '$(CC) $(ALL_CFLAGS)', '$(CXX) $(ALL_CXXFLAGS)')
 		_p('\t$(SILENT) %s $(FORCE_INCLUDE) -o "$@" -MF "$(@:%%.%s=%%.d)" -c "$<"', flags, objext)
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/make/make_cpp.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/make/make_csharp.lua
+-- AMALGAMATE FILE TAIL : /src/actions/make/make_cpp.lua
+-- AMALGAMATE FILE HEAD : /src/actions/make/make_csharp.lua
 --
 -- make_csharp.lua
 -- Generate a C# project makefile.
@@ -6949,8 +6949,8 @@ _WORKING_DIR		=lfs.currentdir()
 		_p('')
 
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/make/make_csharp.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/_vstudio.lua
+-- AMALGAMATE FILE TAIL : /src/actions/make/make_csharp.lua
+-- AMALGAMATE FILE HEAD : /src/actions/vstudio/_vstudio.lua
 --
 -- _vstudio.lua
 -- Define the Visual Studio 200x actions.
@@ -7365,8 +7365,8 @@ _WORKING_DIR		=lfs.currentdir()
 			toolsVersion    = "4.0",
 		}
 	}
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/_vstudio.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2002_solution.lua
+-- AMALGAMATE FILE TAIL : /src/actions/vstudio/_vstudio.lua
+-- AMALGAMATE FILE HEAD : /src/actions/vstudio/vs2002_solution.lua
 --
 -- vs2002_solution.lua
 -- Generate a Visual Studio 2002 solution.
@@ -7419,8 +7419,8 @@ _WORKING_DIR		=lfs.currentdir()
 		_p('EndGlobal')
 	end
 	
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2002_solution.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2002_csproj.lua
+-- AMALGAMATE FILE TAIL : /src/actions/vstudio/vs2002_solution.lua
+-- AMALGAMATE FILE HEAD : /src/actions/vstudio/vs2002_csproj.lua
 --
 -- vs2002_csproj.lua
 -- Generate a Visual Studio 2002/2003 C# project.
@@ -7585,8 +7585,8 @@ _WORKING_DIR		=lfs.currentdir()
 		_p('</VisualStudioProject>')
 
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2002_csproj.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2002_csproj_user.lua
+-- AMALGAMATE FILE TAIL : /src/actions/vstudio/vs2002_csproj.lua
+-- AMALGAMATE FILE HEAD : /src/actions/vstudio/vs2002_csproj_user.lua
 --
 -- vs2002_csproj_user.lua
 -- Generate a Visual Studio 2002/2003 C# .user file.
@@ -7639,8 +7639,8 @@ _WORKING_DIR		=lfs.currentdir()
 		_p('</VisualStudioProject>')
 		
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2002_csproj_user.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs200x_vcproj.lua
+-- AMALGAMATE FILE TAIL : /src/actions/vstudio/vs2002_csproj_user.lua
+-- AMALGAMATE FILE HEAD : /src/actions/vstudio/vs200x_vcproj.lua
 --
 -- vs200x_vcproj.lua
 -- Generate a Visual Studio 2002-2008 C/C++ project.
@@ -8439,8 +8439,8 @@ _WORKING_DIR		=lfs.currentdir()
 
 
 
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs200x_vcproj.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs200x_vcproj_user.lua
+-- AMALGAMATE FILE TAIL : /src/actions/vstudio/vs200x_vcproj.lua
+-- AMALGAMATE FILE HEAD : /src/actions/vstudio/vs200x_vcproj_user.lua
 --
 -- vs200x_vcproj_user.lua
 -- Generate a Visual Studio 2002-2008 C/C++ project .user file
@@ -8512,8 +8512,8 @@ _WORKING_DIR		=lfs.currentdir()
 				
 		_p(3,'/>')
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs200x_vcproj_user.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2003_solution.lua
+-- AMALGAMATE FILE TAIL : /src/actions/vstudio/vs200x_vcproj_user.lua
+-- AMALGAMATE FILE HEAD : /src/actions/vstudio/vs2003_solution.lua
 --
 -- vs2003_solution.lua
 -- Generate a Visual Studio 2003 solution.
@@ -8577,8 +8577,8 @@ _WORKING_DIR		=lfs.currentdir()
 		
 		_p('EndGlobal')
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2003_solution.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2005_solution.lua
+-- AMALGAMATE FILE TAIL : /src/actions/vstudio/vs2003_solution.lua
+-- AMALGAMATE FILE HEAD : /src/actions/vstudio/vs2005_solution.lua
 --
 -- vs2005_solution.lua
 -- Generate a Visual Studio 2005-2010 solution.
@@ -8719,8 +8719,8 @@ _WORKING_DIR		=lfs.currentdir()
 		_p('\t\tHideSolutionNode = FALSE')
 		_p('\tEndGlobalSection')
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2005_solution.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2005_csproj.lua
+-- AMALGAMATE FILE TAIL : /src/actions/vstudio/vs2005_solution.lua
+-- AMALGAMATE FILE HEAD : /src/actions/vstudio/vs2005_csproj.lua
 --
 -- vs2005_csproj.lua
 -- Generate a Visual Studio 2005/2008 C# project.
@@ -9019,8 +9019,8 @@ _WORKING_DIR		=lfs.currentdir()
 
 	end
 
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2005_csproj.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2005_csproj_user.lua
+-- AMALGAMATE FILE TAIL : /src/actions/vstudio/vs2005_csproj.lua
+-- AMALGAMATE FILE HEAD : /src/actions/vstudio/vs2005_csproj_user.lua
 --
 -- vs2005_csproj_user.lua
 -- Generate a Visual Studio 2005/2008 C# .user file.
@@ -9042,8 +9042,8 @@ _WORKING_DIR		=lfs.currentdir()
 		_p('</Project>')
 		
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2005_csproj_user.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2010_vcxproj.lua
+-- AMALGAMATE FILE TAIL : /src/actions/vstudio/vs2005_csproj_user.lua
+-- AMALGAMATE FILE HEAD : /src/actions/vstudio/vs2010_vcxproj.lua
 --
 -- vs2010_vcxproj.lua
 -- Generate a Visual Studio 2010 C/C++ project.
@@ -9723,8 +9723,8 @@ _WORKING_DIR		=lfs.currentdir()
 
 
 
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2010_vcxproj.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2010_vcxproj_filters.lua
+-- AMALGAMATE FILE TAIL : /src/actions/vstudio/vs2010_vcxproj.lua
+-- AMALGAMATE FILE HEAD : /src/actions/vstudio/vs2010_vcxproj_filters.lua
 --
 -- vs2010_vcxproj_filters.lua
 -- Generate a Visual Studio 2010 C/C++ filters file.
@@ -9822,8 +9822,8 @@ _WORKING_DIR		=lfs.currentdir()
 			vc2010.filefiltergroup(prj, "ResourceCompile")
 		_p('</Project>')
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2010_vcxproj_filters.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2012.lua
+-- AMALGAMATE FILE TAIL : /src/actions/vstudio/vs2010_vcxproj_filters.lua
+-- AMALGAMATE FILE HEAD : /src/actions/vstudio/vs2012.lua
 --
 -- vs2012.lua
 -- Baseline support for Visual Studio 2012.
@@ -9882,8 +9882,8 @@ _WORKING_DIR		=lfs.currentdir()
 		}
 	}
 
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2012.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2013.lua
+-- AMALGAMATE FILE TAIL : /src/actions/vstudio/vs2012.lua
+-- AMALGAMATE FILE HEAD : /src/actions/vstudio/vs2013.lua
 --
 -- vs2013.lua
 -- Baseline support for Visual Studio 2013.
@@ -9941,8 +9941,8 @@ _WORKING_DIR		=lfs.currentdir()
 			toolsVersion    = "12.0",
 		}
 	}
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/vstudio/vs2013.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/xcode/_xcode.lua
+-- AMALGAMATE FILE TAIL : /src/actions/vstudio/vs2013.lua
+-- AMALGAMATE FILE HEAD : /src/actions/xcode/_xcode.lua
 --
 -- _xcode.lua
 -- Define the Apple XCode action and support functions.
@@ -10054,8 +10054,8 @@ _WORKING_DIR		=lfs.currentdir()
 	}
 
 
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/xcode/_xcode.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/xcode/xcode_common.lua
+-- AMALGAMATE FILE TAIL : /src/actions/xcode/_xcode.lua
+-- AMALGAMATE FILE HEAD : /src/actions/xcode/xcode_common.lua
 --
 -- xcode_common.lua
 -- Functions to generate the different sections of an Xcode project.
@@ -10988,8 +10988,8 @@ _WORKING_DIR		=lfs.currentdir()
 		_p('\trootObject = 08FB7793FE84155DC02AAC07 /* Project object */;')
 		_p('}')
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/xcode/xcode_common.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/xcode/xcode_project.lua
+-- AMALGAMATE FILE TAIL : /src/actions/xcode/xcode_common.lua
+-- AMALGAMATE FILE HEAD : /src/actions/xcode/xcode_project.lua
 --
 -- xcode_project.lua
 -- Generate an Xcode C/C++ project.
@@ -11155,8 +11155,8 @@ _WORKING_DIR		=lfs.currentdir()
 		xcode.XCBuildConfigurationList(tr)
 		xcode.Footer(tr)
 	end
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/xcode/xcode_project.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/xcode/xcode4_workspace.lua
+-- AMALGAMATE FILE TAIL : /src/actions/xcode/xcode_project.lua
+-- AMALGAMATE FILE HEAD : /src/actions/xcode/xcode4_workspace.lua
 premake.xcode4 = {}
 
 local xcode4 = premake.xcode4
@@ -11197,8 +11197,8 @@ end
 
 
 
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/xcode/xcode4_workspace.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/actions/clean/_clean.lua
+-- AMALGAMATE FILE TAIL : /src/actions/xcode/xcode4_workspace.lua
+-- AMALGAMATE FILE HEAD : /src/actions/clean/_clean.lua
 --
 -- _clean.lua
 -- The "clean" action: removes all generated files.
@@ -11303,8 +11303,8 @@ end
 			end
 		end
 	}
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/actions/clean/_clean.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/_premake_main.lua
+-- AMALGAMATE FILE TAIL : /src/actions/clean/_clean.lua
+-- AMALGAMATE FILE HEAD : /src/_premake_main.lua
 --
 -- _premake_main.lua
 -- Script-side entry point for the main program logic.
@@ -11467,8 +11467,8 @@ end
 
 	end
 	
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/_premake_main.lua
--- AMALGAMATE FILE HEAD : /home/kriss/devcake/puremake/src/host/../..//src/host/main.lua
+-- AMALGAMATE FILE TAIL : /src/_premake_main.lua
+-- AMALGAMATE FILE HEAD : /src/host/main.lua
 
 local lfs = require("lfs")
 
@@ -11543,4 +11543,5 @@ if not _premake_main then
 	return _premake_main(_BASE_SCRIPT_DIR.."src")
 end
 return _premake_main()
--- AMALGAMATE FILE TAIL : /home/kriss/devcake/puremake/src/host/../..//src/host/main.lua
+
+-- AMALGAMATE FILE TAIL : /src/host/main.lua
