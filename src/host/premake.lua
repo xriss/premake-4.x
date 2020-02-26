@@ -7,8 +7,8 @@ premake=premake or {}
 
 	
 _PREMAKE_COPYRIGHT	="Copyright (C) 2002-2015 Jason Perkins and the Premake Project"
-_PREMAKE_VERSION	="4.0.0-lua"
-_PREMAKE_URL		="https://github.com/premake/premake-4.x"
+_PREMAKE_VERSION	="4.0.0-puremake"
+_PREMAKE_URL		="https://github.com/xriss/puremake"
 _OS					="other"
 
 -- jit knows the OS, but it might need tweaking to fit what names premake uses
@@ -75,14 +75,9 @@ _BASE_SCRIPT_DIR=string.gsub(_BASE_SCRIPT_DIR,"//","/")
 
 
 
-dofile( _BASE_SCRIPT_DIR .. "src/host/criteria.lua" )
-dofile( _BASE_SCRIPT_DIR .. "src/host/debug.lua" )
 dofile( _BASE_SCRIPT_DIR .. "src/host/path.lua" )
 dofile( _BASE_SCRIPT_DIR .. "src/host/os.lua" )
 dofile( _BASE_SCRIPT_DIR .. "src/host/string.lua" )
-dofile( _BASE_SCRIPT_DIR .. "src/host/buffered.lua" )
-dofile( _BASE_SCRIPT_DIR .. "src/host/http.lua" )
-dofile( _BASE_SCRIPT_DIR .. "src/host/zip.lua" )
 
 
 

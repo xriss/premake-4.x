@@ -113,10 +113,10 @@ $(OBJDIR)/main.o: main.cpp
 	function suite.findsPCH_onIncludeDirs()
 		location "MyProject"
 		pchheader "premake.h"
-		includedirs { "../src/host" }
+		includedirs { "../old/src/host" }
 		prepare()
 		_.pchconfig(cfg)
 		test.capture [[
-  PCH        = ../../src/host/premake.h
+  PCH        = ../../old/src/host/premake.h
 		]]
 	end
