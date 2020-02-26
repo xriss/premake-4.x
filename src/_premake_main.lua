@@ -7,8 +7,8 @@
 	local lfs = require("lfs")
 
 	local scriptfile    = "premake4.lua"
-	local shorthelp     = "Type 'premake4 --help' for help"
-	local versionhelp   = "premake4 (Premake Build Script Generator) %s"
+	local shorthelp     = "Type 'puremake --help' for help"
+	local versionhelp   = "puremake (Premake Build Script Generator) %s"
 	
 	_WORKING_DIR        = lfs.currentdir()
 
