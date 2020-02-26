@@ -6,6 +6,7 @@ os.mkdir=function(s)
 end
 
 os.chdir=function(s)
+--os.print("CD",s)
 	return lfs.chdir(s)
 end
 
@@ -138,7 +139,7 @@ os.matchisfile=function(it)
 
 --	os.print("FUNCTION","os."..debug.getinfo(1).name,it.pd..it.filename,os.isfile( os.matchname(it)))
 	
-	return os.isfile( it.pd..it.filename )
+	return os.isfile( path.join( it.pd , it.filename) )
 
 end
 

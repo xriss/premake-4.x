@@ -176,7 +176,6 @@
 			basedir = basedir:sub(1, starpos - 1)
 		end
 		basedir = path.getdirectory(basedir)
-		if (basedir == ".") then basedir = "./" end
 
 		-- recurse into subdirectories?
 		local recurse = mask:find("**", nil, true)
@@ -186,7 +185,6 @@
 
 		local function matchwalker(basedir)
 			local wildcard = path.join(basedir, "*")
-
 			-- retrieve files from OS and test against mask
 			local m = os.matchstart(wildcard)
 			while (os.matchnext(m)) do
