@@ -16,44 +16,45 @@ os.isdir=function(s)
 end
 
 os.pathsearch=function(name,...)
-
-	for i,p in ipairs({...}) do
-	
-		local mode=nil
-		
-		if p:find(";") then
-			mode=";"
-		elseif p:find(":") then
-			if p:find(":") == "2" then -- bad windows
-				mode=nil
-			else
-				mode=":"
-			end
-		end
-		
-		local ps={}
-		if mode then
-			local fi=1
-			while true do
-				local fa,fb=string.find(p,mode,fi)
-				if fa then
-					local s=string.sub(p,fi,fa-1)
-					ps[#ps+1]=s
-					fi=fb+1
+	local aa={...}
+	for i=1,#aa do
+		local p=aa[i]
+		if p then
+			local mode=nil
+			
+			if p:find(";") then
+				mode=";"
+			elseif p:find(":") then
+				if p:find(":") == "2" then -- bad windows
+					mode=nil
 				else
-					break
+					mode=":"
 				end
 			end
-			ps[#ps+1]=string.sub(p,fi)
-		else
-			ps[#ps+1]=p
-		end
+			
+			local ps={}
+			if mode then
+				local fi=1
+				while true do
+					local fa,fb=string.find(p,mode,fi)
+					if fa then
+						local s=string.sub(p,fi,fa-1)
+						ps[#ps+1]=s
+						fi=fb+1
+					else
+						break
+					end
+				end
+				ps[#ps+1]=string.sub(p,fi)
+			else
+				ps[#ps+1]=p
+			end
 
-		for _,n in ipairs(ps) do
-			local t=n.."/"..name
-			if os.isfile(t) then return n end
+			for _,n in ipairs(ps) do
+				local t=n.."/"..name
+				if os.isfile(t) then return n end
+			end
 		end
-		
 	end
 
 -- os.print("FUNCTION","os."..debug.getinfo(1).name)
