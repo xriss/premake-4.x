@@ -69,8 +69,6 @@ _SCRIPT_DIR=lfs.currentdir() .. "/" .. string.match(arg[0],"(.*/)")
 -- do we need to load script files or have we already done this?
 if not _premake_main then
 	dofile( _BASE_SCRIPT_DIR .. "src/_premake_main.lua" )
+	return _premake_main(_BASE_SCRIPT_DIR.."src")
 end
-
--- and finally run premake
-
-return _premake_main(_BASE_SCRIPT_DIR.."src")
+return _premake_main()
