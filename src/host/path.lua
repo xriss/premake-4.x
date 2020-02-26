@@ -399,9 +399,7 @@ path.join=function(...)
 
 	local aa={...}
 	
-	assert(aa[1])
-	if aa[1]==nil then return "." end
-	if aa[1]=="" then aa[1]="." end
+	if aa[1]==nil or aa[1]=="" then aa[1]="." end
 
 	local n=""
 	for i,v in ipairs(aa) do
