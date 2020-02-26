@@ -12,7 +12,7 @@
 		printf(_PREMAKE_COPYRIGHT)
 		printf("%s %s", _VERSION, _COPYRIGHT)
 		printf("")
-		printf("Usage: premake4 [options] action [arguments]")
+		printf("Usage: puremake [options] action [arguments]")
 		printf("")
 
 		
