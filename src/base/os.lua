@@ -176,7 +176,7 @@
 			basedir = basedir:sub(1, starpos - 1)
 		end
 		basedir = path.getdirectory(basedir)
-		if (basedir == ".") then basedir = "" end
+		if (basedir == ".") then basedir = "./" end
 
 		-- recurse into subdirectories?
 		local recurse = mask:find("**", nil, true)

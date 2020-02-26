@@ -55,80 +55,6 @@ os.pathsearch=function(name,...)
 		end
 		
 	end
---[[
-int os_pathsearch(lua_State* L)
-{
-	int i;
-	for (i = 2; i <= lua_gettop(L); ++i)
-	{
-		const char* path;
-
-		if (lua_isnil(L, i))
-			continue;
-
-		path = luaL_checkstring(L, i);
-		do
-		{
-			const char* split;
-
-			/* look for the closest path separator ; or : */
-			/* can't use : on windows because it breaks on C:\path */
-			const char* semi = strchr(path, ';');
-#if !defined(PLATFORM_WINDOWS)
-			const char* full = strchr(path, ':');
-#else
-			const char* full = NULL;
-#endif
-
-			if (!semi)
-			{
-				split = full;
-			}
-			else if (!full)
-			{
-				split = semi;
-			}
-			else
-			{
-				split = (semi < full) ? semi : full;
-			}
-
-			/* push this piece of the full search string onto the stack */
-			if (split)
-			{
-				lua_pushlstring(L, path, split - path);
-			}
-			else
-			{
-				lua_pushstring(L, path);
-			}
-
-			/* keep an extra copy around, so I can return it if I have a match */
-			lua_pushvalue(L, -1);
-
-			/* append the filename to make the full test path */
-			lua_pushstring(L, "/");
-			lua_pushvalue(L, 1);
-			lua_concat(L, 3);
-
-			/* test it - if it exists return the path */
-			if (do_isfile(lua_tostring(L, -1)))
-			{
-				lua_pop(L, 1);
-				return 1;
-			}
-
-			/* no match, set up the next try */
-			lua_pop(L, 2);
-			path = (split) ? split + 1 : NULL;
-		}
-		while (path);
-	}
-
-	return 0;
-}
-]]
-
 
 -- os.print("FUNCTION","os."..debug.getinfo(1).name)
 
@@ -159,20 +85,12 @@ os.matchstart=function(p)
 	
 	it.p=p
 	it.pd,it.pf=path._splitpath(p)
-
-
+	
+	if it.pd=="" then it.pd="." end
 
 	pcall( function() it.dir_func,it.dir_data=lfs.dir(it.pd) end )
 --ass
 -- very very simple glob hack, any other special character will messup
-
-
-
-
-
-
-
-
 
 	it.pf=it.pf:gsub("%.","%.")
 	it.pf=it.pf:gsub("%*",".*")
@@ -192,10 +110,14 @@ os.matchnext=function(it)
 	while true do
 		it.filename=it.dir_func(it.dir_data)
 
+
 		if not it.filename then return nil end -- end
 
 		if it.filename~="." and it.filename~=".." then 
-			if it.filename:match(it.pf) then return true end -- a match
+			if it.filename:match(it.pf) then
+--				os.print(it.filename)
+				return true
+			end -- a match
 		end
 	end
 	
