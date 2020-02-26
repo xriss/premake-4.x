@@ -51,7 +51,7 @@ os.pathsearch=function(name,...)
 
 		for _,n in ipairs(ps) do
 			local t=n.."/"..name
-			if os.isfile(t) then return t end
+			if os.isfile(t) then return n end
 		end
 		
 	end
