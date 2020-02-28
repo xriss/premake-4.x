@@ -23,6 +23,13 @@ local d=fp:read("*all")
 fp:close()
 fo:write(d)
 
+fo:write("\n\n")
+
+local fp=assert(io.open(_BASE_SCRIPT_DIR .. "README.md","rb"))
+local d=fp:read("*all")
+fp:close()
+fo:write(d)
+
 fo:write("\n]]\n\n")
 
 local preload_module=function(p,name)
