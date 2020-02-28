@@ -24,7 +24,8 @@ For example
 
 will install luajit using apt-get, you will need to adjust that into an 
 appropriate action for you operating system. For instance OSX would be 
-```brew install luajit``` assuming you have brew installed.
+```brew install luajit``` assuming you have brew installed and 
+https://luapower.com/ will help you with windows.
 
 	./puremake.sh
 
