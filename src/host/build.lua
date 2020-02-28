@@ -14,6 +14,14 @@ _BASE_SCRIPT_DIR=string.gsub(_BASE_SCRIPT_DIR,"//","/")
 
 local fo=io.open( _BASE_SCRIPT_DIR .. "/puremake.lua" ,"wb")
 fo:write("#!/usr/bin/env luajit\n\n")
+fo:write("--[[\n\n")
+
+local fp=assert(io.open(_BASE_SCRIPT_DIR .. "LICENSE.txt","rb"))
+local d=fp:read("*all")
+fp:close()
+fo:write(d)
+
+fo:write("\n]]\n\n")
 
 local amalgamate=function(p)
 
