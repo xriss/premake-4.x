@@ -16,7 +16,7 @@ local M={}
 local wpath=M
 
 -- a soft require of lfs so lfs can be nil
-local lfs=select(2,pcall( function() return require("lfs") end ))
+local lfs=select(2,pcall( function() return require("lfs_any") end ))
 
 
 --[[#lua.wetgenes.path.setup

@@ -1,6 +1,6 @@
 
 -- we really need LFS
-lfs=require("lfs")
+lfs=require("lfs_any")
 
 
 premake=premake or {}

@@ -1,5 +1,5 @@
 
-local lfs = require("lfs")
+local lfs = require("lfs_any")
 
 
 -- handle command line args and start premake
