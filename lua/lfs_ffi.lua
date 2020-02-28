@@ -1,3 +1,21 @@
+
+--[[
+
+This lfs_ffi.lua file comes from
+
+https://github.com/sonoro1234/luafilesystem
+
+which in turn comes from
+
+https://github.com/spacewander/luafilesystem
+
+and should work with Windows, OSX or linux so we can use it as a built 
+in backup alternative module to lfs.
+
+
+]]
+
+
 local bit = require "bit"
 local ffi = require "ffi"
 

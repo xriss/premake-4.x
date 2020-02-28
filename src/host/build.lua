@@ -1,4 +1,6 @@
 
+local lfs = require("lfs_any")
+
 -- bundle all the lua files
 
 _ARGV={...}
@@ -22,6 +24,48 @@ fp:close()
 fo:write(d)
 
 fo:write("\n]]\n\n")
+
+local preload_module=function(p,name)
+
+	local fp=assert(io.open(p,"rb"))
+	local data=fp:read("*all")
+	fp:close()
+
+	fo:write([[
+package.preload["]]..name..[["] = function ()
+]]..data..[[
+end
+]])
+
+end
+
+
+
+local findfiles
+findfiles=function(base,dir)
+	local path=base..( dir=="" and "" or ("/"..dir) )
+	for filename in lfs.dir(path) do
+		if filename~="." and filename~=".." then
+			local file=path.."/"..filename
+			if lfs.attributes(file,"mode") == "file" then
+
+				local name=( dir=="" and "" or (dir.."/") )..filename
+				name=name:gsub("%.lua$","")
+				name=name:gsub("/",".")
+
+				print("MODULE",name)
+				preload_module(file,name)
+
+			elseif lfs.attributes(file,"mode")== "directory" then
+--				print("found dir, "..file," containing:")
+				findfiles(base,( dir=="" and "" or (dir.."/") )..filename)
+			end
+		end
+	end
+end
+findfiles(_BASE_SCRIPT_DIR.."lua","")
+
+
 
 local amalgamate=function(p)
 

@@ -15,4 +15,6 @@ if [ -z "$PUREMAKE_LUA" ]; then
  fi
 fi
 
+export LUA_PATH="$BASEPATH/lua/?.lua;;"
+
 $PUREMAKE_LUA $BASEPATH/src/host/build.lua $*
