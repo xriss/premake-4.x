@@ -64,7 +64,7 @@ https://luapower.com/ will help you with windows.
 
 will run premake4 using the installed luajit
 
-	./puremake.lua
+	./puremake
 
 will also run premake4 but this file is a completely self contained lua 
 script containing amalgamated files from the src directory and is 
@@ -96,7 +96,7 @@ for i,v in ipairs{
 
 } do
 
-	local M=select(2,pcall( function() return require("lfs") end ))
+	local M=select(2,pcall( function() return require(v) end ))
 
 	if M then return M end
 

@@ -31,7 +31,7 @@ https://luapower.com/ will help you with windows.
 
 will run premake4 using the installed luajit
 
-	./puremake.lua
+	./puremake
 
 will also run premake4 but this file is a completely self contained lua 
 script containing amalgamated files from the src directory and is 

@@ -14,7 +14,7 @@ end
 _BASE_SCRIPT_DIR=string.gsub(_BASE_SCRIPT_DIR,"//","/")
 
 
-local fo=io.open( _BASE_SCRIPT_DIR .. "/puremake.lua" ,"wb")
+local fo=io.open( _BASE_SCRIPT_DIR .. "/puremake" ,"wb")
 fo:write("#!/usr/bin/env luajit\n\n")
 fo:write("--[[\n\n")
 

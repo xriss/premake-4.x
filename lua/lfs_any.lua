@@ -8,7 +8,7 @@ for i,v in ipairs{
 
 } do
 
-	local M=select(2,pcall( function() return require("lfs") end ))
+	local M=select(2,pcall( function() return require(v) end ))
 
 	if M then return M end
 
