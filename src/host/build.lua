@@ -39,7 +39,7 @@ local preload_module=function(p,name)
 	fp:close()
 
 	fo:write([[
-package.preload["]]..name..[["] = function ()
+package.preload["]]..name..[["] = function (...)
 ]]..data..[[
 end
 ]])

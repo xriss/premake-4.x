@@ -85,7 +85,7 @@ code to build.
 
 ]]
 
-package.preload["lfs_any"] = function ()
+package.preload["lfs_any"] = function (...)
 
 -- the first successful require is returned as this module
 
@@ -103,7 +103,7 @@ for i,v in ipairs{
 end
 
 end
-package.preload["lfs_ffi"] = function ()
+package.preload["lfs_ffi"] = function (...)
 
 --[[
 
@@ -1457,7 +1457,7 @@ _M.unicode_errors = false
 
 return _M
 end
-package.preload["puremake.io"] = function ()
+package.preload["puremake.io"] = function (...)
 
 
 local M={} ; package.loaded[(...)]=M ; M.module_name=(...)
@@ -1530,16 +1530,16 @@ local pmio=M
 		end
 
 		if type(msg) == "number" then
-			s = string.rep(pmio.indent, msg) .. string.format(...)
+			s = string.rep( (io.indent or pmio.indent) , msg) .. string.format(...)
 		else
 			s = string.format(msg,...)
 		end
 		
 		if pmio.captured then
-			pmio.captured = pmio.captured .. s .. pmio.eol
+			pmio.captured = pmio.captured .. s .. (io.eol or pmio.eol)
 		else
 			pmio.write(s)
-			pmio.write(pmio.eol)
+			pmio.write((io.eol or pmio.eol))
 		end
 	end
 
@@ -1551,7 +1551,7 @@ local pmio=M
 
 	_p = pmio.printf
 end
-package.preload["puremake.path"] = function ()
+package.preload["puremake.path"] = function (...)
 
 
 
@@ -2086,7 +2086,7 @@ end
 --
 
 	function path.getname(p)
-		local i = findlast(p,"[/\\]")
+		local i = pmstring.findlast(p,"[/\\]")
 		if (i) then
 			return p:sub(i + 1)
 		else
@@ -2176,6 +2176,7 @@ end
 --
 
 	function path.wildcards(pattern)
+
 		-- Escape characters that have special meanings in Lua patterns
 		pattern = pattern:gsub("([%+%.%-%^%$%(%)%%])", "%%%1")
 
@@ -2193,7 +2194,7 @@ end
 
 
 end
-package.preload["puremake.os"] = function ()
+package.preload["puremake.os"] = function (...)
 
 local M={} ; package.loaded[(...)]=M ; M.module_name=(...)
 setmetatable(M,{__index=os}) -- use os as prototype
@@ -2476,7 +2477,7 @@ end
 --
 
 	function pmos.get()
-		return _OPTIONS.pmos or _pmos
+		return _OPTIONS.os or _OS
 	end
 
 
@@ -2644,7 +2645,7 @@ end
 	function pmos.outputof(cmd)
 		local pipe = io.popen(cmd)
 		local result = pipe:read('*a')
-		pipe:clpmose()
+		pipe:close()
 		return result
 	end
 
@@ -2676,7 +2677,7 @@ end
 	
 
 end
-package.preload["puremake.table"] = function ()
+package.preload["puremake.table"] = function (...)
 
 
 
@@ -2715,7 +2716,7 @@ local pmtable=M
 	function pmtable.extract(arr, fname)
 		local result = { }
 		for _,v in ipairs(arr) do
-			pmtable.insert(result, v[fname])
+			table.insert(result, v[fname])
 		end
 		return result
 	end
@@ -2732,10 +2733,10 @@ local pmtable=M
 		
 		local function flatten(arr)
 			for _, v in ipairs(arr) do
-				if type(v) == "pmtable" then
+				if type(v) == "table" then
 					flatten(v)
 				else
-					pmtable.insert(result, v)
+					table.insert(result, v)
 				end
 			end
 		end
@@ -2772,12 +2773,12 @@ local pmtable=M
 --
 
 	function pmtable.insertflat(tbl, values)
-		if type(values) == "pmtable" then
+		if type(values) == "table" then
 			for _, value in ipairs(values) do
 				pmtable.insertflat(tbl, value)
 			end
 		else
-			pmtable.insert(tbl, values)
+			table.insert(tbl, values)
 		end
 	end
 
@@ -2799,12 +2800,12 @@ local pmtable=M
 	function pmtable.join(...)
 		local result = { }
 		for _,t in ipairs({...}) do
-			if type(t) == "pmtable" then
+			if type(t) == "table" then
 				for _,v in ipairs(t) do
-					pmtable.insert(result, v)
+					table.insert(result, v)
 				end
 			else
-				pmtable.insert(result, t)
+				table.insert(result, t)
 			end
 		end
 		return result
@@ -2818,7 +2819,7 @@ local pmtable=M
 	function pmtable.keys(tbl)
 		local keys = {}
 		for k, _ in pairs(tbl) do
-			pmtable.insert(keys, k)
+			table.insert(keys, k)
 		end
 		return keys
 	end
@@ -2832,7 +2833,7 @@ local pmtable=M
 	function pmtable.merge(...)
 		local result = { }
 		for _,t in ipairs({arg}) do
-			if type(t) == "pmtable" then
+			if type(t) == "table" then
 				for k,v in pairs(t) do
 					result[k] = v
 				end
@@ -2860,7 +2861,7 @@ local pmtable=M
 				tvalue = translation[value]
 			end
 			if (tvalue) then
-				pmtable.insert(result, tvalue)
+				table.insert(result, tvalue)
 			end
 		end
 		return result
@@ -2868,7 +2869,7 @@ local pmtable=M
 	
 		
 end
-package.preload["puremake.string"] = function ()
+package.preload["puremake.string"] = function (...)
 
 local M={} ; package.loaded[(...)]=M ; M.module_name=(...)
 setmetatable(M,{__index=string}) -- use string as prototype
@@ -2952,10 +2953,6 @@ end
 local pmstring=require("puremake.string")
 
 for n,v in pairs(pmstring) do string[n]=string[n] or v end
-
-
-
-for n,v in pairs(string) do print(n,v) end
 -- AMALGAMATE FILE TAIL : /src/host/string.lua
 -- AMALGAMATE FILE HEAD : /src/host/path.lua
 
