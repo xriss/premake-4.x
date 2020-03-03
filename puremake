@@ -1457,31 +1457,116 @@ _M.unicode_errors = false
 
 return _M
 end
--- AMALGAMATE FILE HEAD : /src/host/string.lua
-
-string=string or {}
+package.preload["puremake.io"] = function ()
 
 
-string.startswith=function(a,b)
+local M={} ; package.loaded[(...)]=M ; M.module_name=(...)
+setmetatable(M,{__index=io}) -- use io as prototype
+local pmio=M
 
---	os.print("FUNCTION","string."..debug.getinfo(1).name,a,b,b==a:sub(1,#b))
-	
-	if a and b then
-		return b==a:sub(1,#b)
+
+
+--
+-- pmio.lua
+-- Additpmions to the I/O namespace.
+-- Copyright (c) 2008-2009 Jason Perkins and the Premake project
+--
+
+
+--
+-- Prepare to capture the output from all subsequent calls to pmio.printf(), 
+-- used for automated testing of the generators.
+--
+
+	function pmio.capture()
+		pmio.captured = ''
 	end
 	
-end
+	
+	
+--
+-- Returns the captured text and stops capturing.
+--
 
-string.endswith=function(a,b)
-
---	os.print("FUNCTION","string."..debug.getinfo(1).name,a,b,b==a:sub(-#b))
-
-	if a and b then
-		return b==a:sub(-#b)
+	function pmio.endcapture()
+		local captured = pmio.captured
+		pmio.captured = nil
+		return captured
 	end
+	
+	
+--
+-- Open an overload of the pmio.open() function, which will create any missing
+-- subdirectories in the filename if "mode" is set to writeable.
+--
+
+	local builtin_open = pmio.open
+	function pmio.open(fname, mode)
+		if (mode) then
+			if (mode:find("w")) then
+				local dir = path.getdirectory(fname)
+				ok, err = os.mkdir(dir)
+				if (not ok) then
+					error(err, 0)
+				end
+			end
+		end
+		return builtin_open(fname, mode)
+	end
+
+
+
+-- 
+-- A shortcut for printing formatted output to an output stream.
+--
+
+	function pmio.printf(msg, ...)
+		if not pmio.eol then
+			pmio.eol = "\n"
+		end
+
+		if not pmio.indent then
+			pmio.indent = "\t"
+		end
+
+		if type(msg) == "number" then
+			s = string.rep(pmio.indent, msg) .. string.format(...)
+		else
+			s = string.format(msg,...)
+		end
+		
+		if pmio.captured then
+			pmio.captured = pmio.captured .. s .. pmio.eol
+		else
+			pmio.write(s)
+			pmio.write(pmio.eol)
+		end
+	end
+
+
+--
+-- Because I use pmio.printf() so often in the generators, create a terse shortcut
+-- for it. This saves me typing, and also reduces the size of the executable.
+--
+
+	_p = pmio.printf
 end
--- AMALGAMATE FILE TAIL : /src/host/string.lua
--- AMALGAMATE FILE HEAD : /src/host/path.lua
+package.preload["puremake.path"] = function ()
+
+
+
+local pmstring=require("puremake.string")
+local pmos=require("puremake.os")
+
+
+local M={} ; package.loaded[(...)]=M ; M.module_name=(...)
+local path=M
+
+
+
+
+
+
 --
 -- (C) 2020 Kriss@XIXs.com and released under the MIT license,
 -- see http://opensource.org/licenses/MIT for full license text.
@@ -1496,8 +1581,7 @@ Manage file paths under linux or windows, so we need to deal with \ or
 	local wpath=require("wetgenes.path")
 
 ]]
-local M={}
-local wpath=M
+local wpath={}
 
 -- a soft require of lfs so lfs can be nil
 local lfs=select(2,pcall( function() return require("lfs_any") end ))
@@ -1810,10 +1894,6 @@ end
 
 
 
-
-path=path or {}
-
-
 path.getrelative=function(a,b)
 
 	local r=wpath.relative(a,b)
@@ -1929,530 +2009,11 @@ path.wildcards=function(s)
 	return s
 	
 end
--- AMALGAMATE FILE TAIL : /src/host/path.lua
--- AMALGAMATE FILE HEAD : /src/host/os.lua
 
-os=os or {}
 
-os.mkdir=function(s)
-	return lfs.mkdir(s)
-end
 
-os.chdir=function(s)
---os.print("CD",s)
-	return lfs.chdir(s)
-end
 
-os.isdir=function(s)
-	local a=lfs.attributes(s)
-	if a and a.mode=="directory" then return true end
-	return false
-end
 
-os.pathsearch=function(name,...)
-	local aa={...}
-	for i=1,#aa do
-		local p=aa[i]
-		if p then
-			local mode=nil
-			
-			if p:find(";") then
-				mode=";"
-			elseif p:find(":") then
-				if p:find(":") == "2" then -- bad windows
-					mode=nil
-				else
-					mode=":"
-				end
-			end
-			
-			local ps={}
-			if mode then
-				local fi=1
-				while true do
-					local fa,fb=string.find(p,mode,fi)
-					if fa then
-						local s=string.sub(p,fi,fa-1)
-						ps[#ps+1]=s
-						fi=fb+1
-					else
-						break
-					end
-				end
-				ps[#ps+1]=string.sub(p,fi)
-			else
-				ps[#ps+1]=p
-			end
-
-			for _,n in ipairs(ps) do
-				local t=n.."/"..name
-				if os.isfile(t) then return n end
-			end
-		end
-	end
-
--- os.print("FUNCTION","os."..debug.getinfo(1).name)
-
-end
-
---[[
-
-os.chmod=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
-os.copyfile=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
-os._is64bit=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
-os.isdir=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
-
-os.getversion=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
-
-os.islink=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
-
-
-os.mkdir=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
-os.realpath=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
-os.rmdir=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
-os.stat=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
-os.writefile_ifnotequal=function() os.print("FUNCTION","os."..debug.getinfo(1).name) end
-
-]]
-
-os.matchstart=function(p)
-	local it={}
-	
-	it.p=p
-	it.pd,it.pf=path._splitpath(p)
-	
-	if it.pd=="" then it.pd="." end
-
-	pcall( function() it.dir_func,it.dir_data=lfs.dir(it.pd) end )
---ass
--- very very simple glob hack, any other special character will messup
-
-	it.pf=it.pf:gsub("%.","%.")
-	it.pf=it.pf:gsub("%*",".*")
-	it.pf=it.pf:gsub("%?",".")
-
---	os.print("FUNCTION","os."..debug.getinfo(1).name,p,it.pd,it.pf)
-		
-	return it
-end
-os.matchdone=function()end
-
-os.matchnext=function(it)
---	os.print("FUNCTION","os."..debug.getinfo(1).name,it)
-	
-	if not it.dir_func then return nil end -- no dir
-	
-	while true do
-		it.filename=it.dir_func(it.dir_data)
-
-
-		if not it.filename then return nil end -- end
-
-		if it.filename~="." and it.filename~=".." then 
-			if it.filename:match(it.pf) then
---				os.print(it.filename)
-				return true
-			end -- a match
-		end
-	end
-	
-end
-
-os.matchname=function(it)
-
---	os.print("FUNCTION","os."..debug.getinfo(1).name,it.pd..it.filename)
-	
-	return it.filename	
-
-end
-
-
-
-os.matchisfile=function(it)
-
---	os.print("FUNCTION","os."..debug.getinfo(1).name,it.pd..it.filename,os.isfile( os.matchname(it)))
-	
-	return os.isfile( path.join( it.pd , it.filename) )
-
-end
-
-os.uuid=function()
-
-	local r=string.format("%04X%04X-%04X-%04X-%04X-%04X%04X%04X",
-		math.random(0,0xffff),math.random(0,0xffff),
-		math.random(0,0xffff),math.random(0,0xffff),math.random(0,0xffff),
-		math.random(0,0xffff),math.random(0,0xffff),math.random(0,0xffff))
-		
---	os.print("FUNCTION","os."..debug.getinfo(1).name,r)
-
-	return r
-end
-
-
-
-os.getcwd=function()
-
---	os.print("FUNCTION","os."..debug.getinfo(1).name)
-	
-	return lfs.currentdir()
-	
-end
-
-os.isfile=function(a)
-
-	local r=lfs.attributes(a,'mode')=="file"
-
---	os.print("FUNCTION","os."..debug.getinfo(1).name,a,r)
-	
-	return r
-end
-
-
-os.locate=function(...)
-
-	for _,a in ipairs{...} do
-		if lfs.attributes(a,'mode')=="file" then return path.getabsolute(a) end
-		local r
-		local paths=path._split(premake.path,";")
-		for i,p in ipairs(paths) do
-			local t=path.getabsolute(p.."/"..a)
-			if lfs.attributes(t,'mode')=="file" then r=t break end
-		end
-		if r then return r end
-	end
---	os.print("FUNCTION","os."..debug.getinfo(1).name,a,r)
-
-	return nil
-end
-
-
-	
-	
-
--- AMALGAMATE FILE TAIL : /src/host/os.lua
--- AMALGAMATE FILE HEAD : /src/host/premake.lua
-
--- we really need LFS
-lfs=require("lfs_any")
-
-
-premake=premake or {}
-
-	
-_PREMAKE_COPYRIGHT	="Copyright (C) 2002-2015 Jason Perkins and the Premake Project"
-_PREMAKE_VERSION	="4.0.0-puremake"
-_PREMAKE_URL		="https://github.com/xriss/puremake"
-_OS					="other"
-
--- jit knows the OS, but it might need tweaking to fit what names premake uses
-if jit then
-	_OS=string.lower(jit.os)
-end
-
-_USER_HOME_DIR		=os.getenv("HOME")
-_WORKING_DIR		=lfs.currentdir()
-
-
--- AMALGAMATE FILE TAIL : /src/host/premake.lua
--- AMALGAMATE FILE HEAD : /src/base/os.lua
---
--- os.lua
--- Additions to the OS namespace.
--- Copyright (c) 2002-2011 Jason Perkins and the Premake project
---
-
-
---
--- Same as os.execute(), but accepts string formatting arguments.
---
-
-	function os.executef(cmd, ...)
-		cmd = string.format(cmd,...)
-		return os.execute(cmd)
-	end
-
-
---
--- Scan the well-known system locations for a particular library.
---
-
-	local function parse_ld_so_conf(conf_file)
-		-- Linux ldconfig file parser to find system library locations
-		local first, last
-		local dirs = { }
-		local file = io.open(conf_file)
-		-- Handle missing ld.so.conf (BSDs) gracefully
-		if file == nil then
-			return dirs
-		end
-		for line in io.lines(conf_file) do
-			-- ignore comments
-			first = line:find("#", 1, true)
-			if first ~= nil then
-				line = line:sub(1, first - 1)
-			end
-
-			if line ~= "" then
-				-- check for include files
-				first, last = line:find("include%s+")
-				if first ~= nil then
-					-- found include glob
-					local include_glob = line:sub(last + 1)
-					local includes = os.matchfiles(include_glob)
-					for _, v in ipairs(includes) do
-						dirs = table.join(dirs, parse_ld_so_conf(v))
-					end
-				else
-					-- found an actual ld path entry
-					table.insert(dirs, line)
-				end
-			end
-		end
-		return dirs
-	end
-
-	function os.findlib(libname)
-		local path, formats
-
-		-- assemble a search path, depending on the platform
-		if os.is("windows") then
-			formats = { "%s.dll", "%s" }
-			path = os.getenv("PATH")
-		elseif os.is("haiku") then
-			formats = { "lib%s.so", "%s.so" }
-			path = os.getenv("LIBRARY_PATH")
-		else
-			if os.is("macosx") then
-				formats = { "lib%s.dylib", "%s.dylib" }
-				path = os.getenv("DYLD_LIBRARY_PATH")
-			else
-				formats = { "lib%s.so", "%s.so" }
-				path = os.getenv("LD_LIBRARY_PATH") or ""
-
-				for _, v in ipairs(parse_ld_so_conf("/etc/ld.so.conf")) do
-					path = path .. ":" .. v
-				end
-			end
-
-			table.insert(formats, "%s")
-			path = path or ""
-			if os.is64bit() then
-				path = path .. ":/lib64:/usr/lib64/:usr/local/lib64"
-			end
-			path = path .. ":/lib:/usr/lib:/usr/local/lib"
-		end
-
-		for _, fmt in ipairs(formats) do
-			local name = string.format(fmt, libname)
-			local result = os.pathsearch(name, path)
-			if result then return result end
-		end
-	end
-
-
-
---
--- Retrieve the current operating system ID string.
---
-
-	function os.get()
-		return _OPTIONS.os or _OS
-	end
-
-
-
---
--- Check the current operating system; may be set with the /os command line flag.
---
-
-	function os.is(id)
-		return (os.get():lower() == id:lower())
-	end
-
-
-
---
--- Determine if the current system is running a 64-bit architecture
---
-
-	local _64BitHostTypes = {
-		"x86_64",
-		"ia64",
-		"amd64",
-		"ppc64",
-		"powerpc64",
-		"sparc64"
-	}
-
-	function os.is64bit()
-		-- Call the native code implementation. If this returns true then
-		-- we're 64-bit, otherwise do more checking locally
---		if (os._is64bit()) then
---			return true
---		end
-
-		-- Identify the system
-		local arch
-		if _OS == "windows" then
-			arch = os.getenv("PROCESSOR_ARCHITECTURE")
-		elseif _OS == "macosx" then
-			arch = os.outputof("echo $HOSTTYPE")
-		else
-			arch = os.outputof("uname -m")
-		end
-
-		-- Check our known 64-bit identifiers
-		arch = arch:lower()
-		for _, hosttype in ipairs(_64BitHostTypes) do
-			if arch:find(hosttype) then
-				return true
-			end
-		end
-		return false
-	end
-
-
-
---
--- The os.matchdirs() and os.matchfiles() functions
---
-
-	local function domatch(result, mask, wantfiles)
-		-- need to remove extraneous path info from the mask to ensure a match
-		-- against the paths returned by the OS. Haven't come up with a good
-		-- way to do it yet, so will handle cases as they come up
-		if mask:startswith("./") then
-			mask = mask:sub(3)
-		end
-
-		-- strip off any leading directory information to find out
-		-- where the search should take place
-		local basedir = mask
-		local starpos = mask:find("%*")
-		if starpos then
-			basedir = basedir:sub(1, starpos - 1)
-		end
-		basedir = path.getdirectory(basedir)
-
-		-- recurse into subdirectories?
-		local recurse = mask:find("**", nil, true)
-
-		-- convert mask to a Lua pattern
-		mask = path.wildcards(mask)
-
-		local function matchwalker(basedir)
-			local wildcard = path.join(basedir, "*")
-			-- retrieve files from OS and test against mask
-			local m = os.matchstart(wildcard)
-			while (os.matchnext(m)) do
-				local isfile = os.matchisfile(m)
-				if ((wantfiles and isfile) or (not wantfiles and not isfile)) then
-					local basename = os.matchname(m)
-					local fullname = path.join(basedir, basename)
-					if basename ~= ".." and fullname:match(mask) == fullname then
-						table.insert(result, fullname)
-					end
-				end
-			end
-			os.matchdone(m)
-
-			-- check subdirectories
-			if recurse then
-				m = os.matchstart(wildcard)
-				while (os.matchnext(m)) do
-					if not os.matchisfile(m) then
-						local dirname = os.matchname(m)
-						if (not dirname:startswith(".")) then
-							matchwalker(path.join(basedir, dirname))
-						end
-					end
-				end
-				os.matchdone(m)
-			end
-		end
-
-		matchwalker(basedir)
-	end
-
-	function os.matchdirs(...)
-		local result = { }
-		for _, mask in ipairs({...}) do
-			domatch(result, mask, false)
-		end
-		return result
-	end
-
-	function os.matchfiles(...)
-		local result = { }
-		for _, mask in ipairs({...}) do
-			domatch(result, mask, true)
-		end
-		return result
-	end
-
-
-
---
--- An overload of the os.mkdir() function, which will create any missing
--- subdirectories along the path.
---
-
-	local builtin_mkdir = os.mkdir
-	function os.mkdir(p)
-		local dir = iif(p:startswith("/"), "/", "")
-		for part in p:gmatch("[^/]+") do
-			dir = dir .. part
-
-			if (part ~= "" and not path.isabsolute(part) and not os.isdir(dir)) then
-				local ok, err = builtin_mkdir(dir)
-				if (not ok) then
-					return nil, err
-				end
-			end
-
-			dir = dir .. "/"
-		end
-
-		return true
-	end
-
-
---
--- Run a shell command and return the output.
---
-
-	function os.outputof(cmd)
-		local pipe = io.popen(cmd)
-		local result = pipe:read('*a')
-		pipe:close()
-		return result
-	end
-
-
---
--- Remove a directory, along with any contained files or subdirectories.
---
-
-	local builtin_rmdir = os.rmdir
-	function os.rmdir(p)
-		-- recursively remove subdirectories
-		local dirs = os.matchdirs(p .. "/*")
-		for _, dname in ipairs(dirs) do
-			os.rmdir(dname)
-		end
-
-		-- remove any files
-		local files = os.matchfiles(p .. "/*")
-		for _, fname in ipairs(files) do
-			os.remove(fname)
-		end
-
-		-- remove this directory
-		builtin_rmdir(p)
-	end
-
--- AMALGAMATE FILE TAIL : /src/base/os.lua
--- AMALGAMATE FILE HEAD : /src/base/path.lua
 --
 -- path.lua
 -- Path manipulation functions.
@@ -2466,7 +2027,7 @@ _WORKING_DIR		=lfs.currentdir()
 
 	function path.getbasename(p)
 		local name = path.getname(p)
-		local i = name:findlast(".", true)
+		local i = pmstring.findlast(name,".", true)
 		if (i) then
 			return name:sub(1, i - 1)
 		else
@@ -2481,7 +2042,7 @@ _WORKING_DIR		=lfs.currentdir()
 --
 
 	function path.getdirectory(p)
-		local i = p:findlast("/", true)
+		local i = pmstring.findlast(p,"/", true)
 		if (i) then
 			if i > 1 then i = i - 1 end
 			return p:sub(1, i)
@@ -2510,7 +2071,7 @@ _WORKING_DIR		=lfs.currentdir()
 --
 
 	function path.getextension(p)
-		local i = p:findlast(".", true)
+		local i = pmstring.findlast(p,".", true)
 		if (i) then
 			return p:sub(i)
 		else
@@ -2525,7 +2086,7 @@ _WORKING_DIR		=lfs.currentdir()
 --
 
 	function path.getname(p)
-		local i = p:findlast("[/\\]")
+		local i = findlast(p,"[/\\]")
 		if (i) then
 			return p:sub(i + 1)
 		else
@@ -2629,21 +2190,724 @@ _WORKING_DIR		=lfs.currentdir()
 
 		return pattern
 	end
--- AMALGAMATE FILE TAIL : /src/base/path.lua
--- AMALGAMATE FILE HEAD : /src/base/string.lua
+
+
+end
+package.preload["puremake.os"] = function ()
+
+local M={} ; package.loaded[(...)]=M ; M.module_name=(...)
+setmetatable(M,{__index=os}) -- use os as prototype
+local pmos=M
+
+
+pmos.mkdir=function(s)
+	return lfs.mkdir(s)
+end
+
+pmos.chdir=function(s)
+--pmos.print("CD",s)
+	return lfs.chdir(s)
+end
+
+pmos.isdir=function(s)
+	local a=lfs.attributes(s)
+	if a and a.mode=="directory" then return true end
+	return false
+end
+
+pmos.pathsearch=function(name,...)
+	local aa={...}
+	for i=1,#aa do
+		local p=aa[i]
+		if p then
+			local mode=nil
+			
+			if p:find(";") then
+				mode=";"
+			elseif p:find(":") then
+				if p:find(":") == "2" then -- bad windows
+					mode=nil
+				else
+					mode=":"
+				end
+			end
+			
+			local ps={}
+			if mode then
+				local fi=1
+				while true do
+					local fa,fb=string.find(p,mode,fi)
+					if fa then
+						local s=string.sub(p,fi,fa-1)
+						ps[#ps+1]=s
+						fi=fb+1
+					else
+						break
+					end
+				end
+				ps[#ps+1]=string.sub(p,fi)
+			else
+				ps[#ps+1]=p
+			end
+
+			for _,n in ipairs(ps) do
+				local t=n.."/"..name
+				if pmos.isfile(t) then return n end
+			end
+		end
+	end
+
+-- pmos.print("FUNCTION","pmos."..debug.getinfo(1).name)
+
+end
+
+
+pmos.matchstart=function(p)
+	local it={}
+	
+	it.p=p
+	it.pd,it.pf=path._splitpath(p)
+	
+	if it.pd=="" then it.pd="." end
+
+	pcall( function() it.dir_func,it.dir_data=lfs.dir(it.pd) end )
+--ass
+-- very very simple glob hack, any other special character will messup
+
+	it.pf=it.pf:gsub("%.","%.")
+	it.pf=it.pf:gsub("%*",".*")
+	it.pf=it.pf:gsub("%?",".")
+
+--	pmos.print("FUNCTION","pmos."..debug.getinfo(1).name,p,it.pd,it.pf)
+		
+	return it
+end
+pmos.matchdone=function()end
+
+pmos.matchnext=function(it)
+--	pmos.print("FUNCTION","pmos."..debug.getinfo(1).name,it)
+	
+	if not it.dir_func then return nil end -- no dir
+	
+	while true do
+		it.filename=it.dir_func(it.dir_data)
+
+
+		if not it.filename then return nil end -- end
+
+		if it.filename~="." and it.filename~=".." then 
+			if it.filename:match(it.pf) then
+--				pmos.print(it.filename)
+				return true
+			end -- a match
+		end
+	end
+	
+end
+
+pmos.matchname=function(it)
+
+--	pmos.print("FUNCTION","pmos."..debug.getinfo(1).name,it.pd..it.filename)
+	
+	return it.filename	
+
+end
+
+
+
+pmos.matchisfile=function(it)
+
+--	pmos.print("FUNCTION","pmos."..debug.getinfo(1).name,it.pd..it.filename,pmos.isfile( pmos.matchname(it)))
+	
+	return pmos.isfile( path.join( it.pd , it.filename) )
+
+end
+
+pmos.uuid=function()
+
+	local r=string.format("%04X%04X-%04X-%04X-%04X-%04X%04X%04X",
+		math.random(0,0xffff),math.random(0,0xffff),
+		math.random(0,0xffff),math.random(0,0xffff),math.random(0,0xffff),
+		math.random(0,0xffff),math.random(0,0xffff),math.random(0,0xffff))
+		
+--	pmos.print("FUNCTION","pmos."..debug.getinfo(1).name,r)
+
+	return r
+end
+
+
+
+pmos.getcwd=function()
+
+--	pmos.print("FUNCTION","pmos."..debug.getinfo(1).name)
+	
+	return lfs.currentdir()
+	
+end
+
+pmos.isfile=function(a)
+
+	local r=lfs.attributes(a,'mode')=="file"
+
+--	pmos.print("FUNCTION","pmos."..debug.getinfo(1).name,a,r)
+	
+	return r
+end
+
+
+pmos.locate=function(...)
+
+	for _,a in ipairs{...} do
+		if lfs.attributes(a,'mode')=="file" then return path.getabsolute(a) end
+		local r
+		local paths=path._split(premake.path,";")
+		for i,p in ipairs(paths) do
+			local t=path.getabsolute(p.."/"..a)
+			if lfs.attributes(t,'mode')=="file" then r=t break end
+		end
+		if r then return r end
+	end
+--	pmos.print("FUNCTION","pmos."..debug.getinfo(1).name,a,r)
+
+	return nil
+end
+
+
+
+
 --
--- string.lua
--- Additions to Lua's built-in string functions.
+-- pmos.lua
+-- Additions to the pmos namespace.
+-- Copyright (c) 2002-2011 Jason Perkins and the Premake project
+--
+
+
+--
+-- Same as pmos.execute(), but accepts string formatting arguments.
+--
+
+	function pmos.executef(cmd, ...)
+		cmd = string.format(cmd,...)
+		return pmos.execute(cmd)
+	end
+
+
+--
+-- Scan the well-known system locations for a particular library.
+--
+
+	local function parse_ld_so_conf(conf_file)
+		-- Linux ldconfig file parser to find system library locations
+		local first, last
+		local dirs = { }
+		local file = io.open(conf_file)
+		-- Handle missing ld.so.conf (BSDs) gracefully
+		if file == nil then
+			return dirs
+		end
+		for line in io.lines(conf_file) do
+			-- ignore comments
+			first = line:find("#", 1, true)
+			if first ~= nil then
+				line = line:sub(1, first - 1)
+			end
+
+			if line ~= "" then
+				-- check for include files
+				first, last = line:find("include%s+")
+				if first ~= nil then
+					-- found include glob
+					local include_glob = line:sub(last + 1)
+					local includes = pmos.matchfiles(include_glob)
+					for _, v in ipairs(includes) do
+						dirs = table.join(dirs, parse_ld_so_conf(v))
+					end
+				else
+					-- found an actual ld path entry
+					table.insert(dirs, line)
+				end
+			end
+		end
+		return dirs
+	end
+
+	function pmos.findlib(libname)
+		local path, formats
+
+		-- assemble a search path, depending on the platform
+		if pmos.is("windows") then
+			formats = { "%s.dll", "%s" }
+			path = pmos.getenv("PATH")
+		elseif pmos.is("haiku") then
+			formats = { "lib%s.so", "%s.so" }
+			path = pmos.getenv("LIBRARY_PATH")
+		else
+			if pmos.is("macpmosx") then
+				formats = { "lib%s.dylib", "%s.dylib" }
+				path = pmos.getenv("DYLD_LIBRARY_PATH")
+			else
+				formats = { "lib%s.so", "%s.so" }
+				path = pmos.getenv("LD_LIBRARY_PATH") or ""
+
+				for _, v in ipairs(parse_ld_so_conf("/etc/ld.so.conf")) do
+					path = path .. ":" .. v
+				end
+			end
+
+			table.insert(formats, "%s")
+			path = path or ""
+			if pmos.is64bit() then
+				path = path .. ":/lib64:/usr/lib64/:usr/local/lib64"
+			end
+			path = path .. ":/lib:/usr/lib:/usr/local/lib"
+		end
+
+		for _, fmt in ipairs(formats) do
+			local name = string.format(fmt, libname)
+			local result = pmos.pathsearch(name, path)
+			if result then return result end
+		end
+	end
+
+
+
+--
+-- Retrieve the current operating system ID string.
+--
+
+	function pmos.get()
+		return _OPTIONS.pmos or _pmos
+	end
+
+
+
+--
+-- Check the current operating system; may be set with the /pmos command line flag.
+--
+
+	function pmos.is(id)
+		return (pmos.get():lower() == id:lower())
+	end
+
+
+
+--
+-- Determine if the current system is running a 64-bit architecture
+--
+
+	local _64BitHpmostTypes = {
+		"x86_64",
+		"ia64",
+		"amd64",
+		"ppc64",
+		"powerpc64",
+		"sparc64"
+	}
+
+	function pmos.is64bit()
+		-- Call the native code implementation. If this returns true then
+		-- we're 64-bit, otherwise do more checking locally
+--		if (pmos._is64bit()) then
+--			return true
+--		end
+
+		-- Identify the system
+		local arch
+		if _pmos == "windows" then
+			arch = pmos.getenv("PROCESSOR_ARCHITECTURE")
+		elseif _pmos == "macpmosx" then
+			arch = pmos.outputof("echo $HpmosTTYPE")
+		else
+			arch = pmos.outputof("uname -m")
+		end
+
+		-- Check our known 64-bit identifiers
+		arch = arch:lower()
+		for _, hpmosttype in ipairs(_64BitHpmostTypes) do
+			if arch:find(hpmosttype) then
+				return true
+			end
+		end
+		return false
+	end
+
+
+
+--
+-- The pmos.matchdirs() and pmos.matchfiles() functions
+--
+
+	local function domatch(result, mask, wantfiles)
+		-- need to remove extraneous path info from the mask to ensure a match
+		-- against the paths returned by the pmos. Haven't come up with a good
+		-- way to do it yet, so will handle cases as they come up
+		if mask:startswith("./") then
+			mask = mask:sub(3)
+		end
+
+		-- strip off any leading directory information to find out
+		-- where the search should take place
+		local basedir = mask
+		local starppmos = mask:find("%*")
+		if starppmos then
+			basedir = basedir:sub(1, starppmos - 1)
+		end
+		basedir = path.getdirectory(basedir)
+
+		-- recurse into subdirectories?
+		local recurse = mask:find("**", nil, true)
+
+		-- convert mask to a Lua pattern
+		mask = path.wildcards(mask)
+
+		local function matchwalker(basedir)
+			local wildcard = path.join(basedir, "*")
+			-- retrieve files from pmos and test against mask
+			local m = pmos.matchstart(wildcard)
+			while (pmos.matchnext(m)) do
+				local isfile = pmos.matchisfile(m)
+				if ((wantfiles and isfile) or (not wantfiles and not isfile)) then
+					local basename = pmos.matchname(m)
+					local fullname = path.join(basedir, basename)
+					if basename ~= ".." and fullname:match(mask) == fullname then
+						table.insert(result, fullname)
+					end
+				end
+			end
+			pmos.matchdone(m)
+
+			-- check subdirectories
+			if recurse then
+				m = pmos.matchstart(wildcard)
+				while (pmos.matchnext(m)) do
+					if not pmos.matchisfile(m) then
+						local dirname = pmos.matchname(m)
+						if (not dirname:startswith(".")) then
+							matchwalker(path.join(basedir, dirname))
+						end
+					end
+				end
+				pmos.matchdone(m)
+			end
+		end
+
+		matchwalker(basedir)
+	end
+
+	function pmos.matchdirs(...)
+		local result = { }
+		for _, mask in ipairs({...}) do
+			domatch(result, mask, false)
+		end
+		return result
+	end
+
+	function pmos.matchfiles(...)
+		local result = { }
+		for _, mask in ipairs({...}) do
+			domatch(result, mask, true)
+		end
+		return result
+	end
+
+
+
+--
+-- An overload of the pmos.mkdir() function, which will create any missing
+-- subdirectories along the path.
+--
+
+	local builtin_mkdir = pmos.mkdir
+	function pmos.mkdir(p)
+		local dir = iif(p:startswith("/"), "/", "")
+		for part in p:gmatch("[^/]+") do
+			dir = dir .. part
+
+			if (part ~= "" and not path.isabsolute(part) and not pmos.isdir(dir)) then
+				local ok, err = builtin_mkdir(dir)
+				if (not ok) then
+					return nil, err
+				end
+			end
+
+			dir = dir .. "/"
+		end
+
+		return true
+	end
+
+
+--
+-- Run a shell command and return the output.
+--
+
+	function pmos.outputof(cmd)
+		local pipe = io.popen(cmd)
+		local result = pipe:read('*a')
+		pipe:clpmose()
+		return result
+	end
+
+
+--
+-- Remove a directory, along with any contained files or subdirectories.
+--
+
+	local builtin_rmdir = pmos.rmdir
+	function pmos.rmdir(p)
+		-- recursively remove subdirectories
+		local dirs = pmos.matchdirs(p .. "/*")
+		for _, dname in ipairs(dirs) do
+			pmos.rmdir(dname)
+		end
+
+		-- remove any files
+		local files = pmos.matchfiles(p .. "/*")
+		for _, fname in ipairs(files) do
+			pmos.remove(fname)
+		end
+
+		-- remove this directory
+		builtin_rmdir(p)
+	end
+
+
+	
+	
+
+end
+package.preload["puremake.table"] = function ()
+
+
+
+local M={} ; package.loaded[(...)]=M ; M.module_name=(...)
+setmetatable(M,{__index=table}) -- use table as prototype
+local pmtable=M
+
+
+
+--
+-- pmtable.lua
+-- Additions to Lua's built-in pmtable functions.
+-- Copyright (c) 2002-2008 Jason Perkins and the Premake project
+--
+	
+
+--
+-- Returns true if the pmtable contains the specified value.
+--
+
+	function pmtable.contains(t, value)
+		for _,v in pairs(t) do
+			if (v == value) then
+				return true
+			end
+		end
+		return false
+	end
+	
+		
+--
+-- Enumerates an array of objects and returns a new pmtable containing
+-- only the value of one particular field.
+--
+
+	function pmtable.extract(arr, fname)
+		local result = { }
+		for _,v in ipairs(arr) do
+			pmtable.insert(result, v[fname])
+		end
+		return result
+	end
+	
+	
+
+--
+-- Flattens a hierarchy of pmtables into a single array containing all
+-- of the values.
+--
+
+	function pmtable.flatten(arr)
+		local result = { }
+		
+		local function flatten(arr)
+			for _, v in ipairs(arr) do
+				if type(v) == "pmtable" then
+					flatten(v)
+				else
+					pmtable.insert(result, v)
+				end
+			end
+		end
+		
+		flatten(arr)
+		return result
+	end
+
+
+--
+-- Merges an array of items into a string.
+--
+
+	function pmtable.implode(arr, before, after, between)
+		local result = ""
+		for _,v in ipairs(arr) do
+			if (result ~= "" and between) then
+				result = result .. between
+			end
+			result = result .. before .. v .. after
+		end
+		return result
+	end
+
+
+--
+-- Inserts a value of array of values into a pmtable. If the value is
+-- itself a pmtable, its contents are enumerated and added instead. So 
+-- these inputs give these outputs:
+--
+--   "x" -> { "x" }
+--   { "x", "y" } -> { "x", "y" }
+--   { "x", { "y" }} -> { "x", "y" }
+--
+
+	function pmtable.insertflat(tbl, values)
+		if type(values) == "pmtable" then
+			for _, value in ipairs(values) do
+				pmtable.insertflat(tbl, value)
+			end
+		else
+			pmtable.insert(tbl, values)
+		end
+	end
+
+
+--
+-- Returns true if the pmtable is empty, and contains no indexed or keyed values.
+--
+
+	function pmtable.isempty(t)
+		return next(t) == nil
+	end
+
+
+--
+-- Adds the values from one array to the end of another and
+-- returns the result.
+--
+
+	function pmtable.join(...)
+		local result = { }
+		for _,t in ipairs({...}) do
+			if type(t) == "pmtable" then
+				for _,v in ipairs(t) do
+					pmtable.insert(result, v)
+				end
+			else
+				pmtable.insert(result, t)
+			end
+		end
+		return result
+	end
+
+
+--
+-- Return a list of all keys used in a pmtable.
+--
+
+	function pmtable.keys(tbl)
+		local keys = {}
+		for k, _ in pairs(tbl) do
+			pmtable.insert(keys, k)
+		end
+		return keys
+	end
+
+
+--
+-- Adds the key-value associations from one pmtable into another
+-- and returns the resulting merged pmtable.
+--
+
+	function pmtable.merge(...)
+		local result = { }
+		for _,t in ipairs({arg}) do
+			if type(t) == "pmtable" then
+				for k,v in pairs(t) do
+					result[k] = v
+				end
+			else
+				error("invalid value")
+			end
+		end
+		return result
+	end
+	
+
+
+--
+-- Translates the values contained in array, using the specified
+-- translation pmtable, and returns the results in a new array.
+--
+
+	function pmtable.translate(arr, translation)
+		local result = { }
+		for _, value in ipairs(arr) do
+			local tvalue
+			if type(translation) == "function" then
+				tvalue = translation(value)
+			else
+				tvalue = translation[value]
+			end
+			if (tvalue) then
+				pmtable.insert(result, tvalue)
+			end
+		end
+		return result
+	end
+	
+		
+end
+package.preload["puremake.string"] = function ()
+
+local M={} ; package.loaded[(...)]=M ; M.module_name=(...)
+setmetatable(M,{__index=string}) -- use string as prototype
+local pmstring=M
+
+pmstring.startswith=function(a,b)
+
+--	os.print("FUNCTION","string."..debug.getinfo(1).name,a,b,b==a:sub(1,#b))
+	
+	if a and b then
+		return b==a:sub(1,#b)
+	end
+	
+end
+
+pmstring.endswith=function(a,b)
+
+--	os.print("FUNCTION","string."..debug.getinfo(1).name,a,b,b==a:sub(-#b))
+
+	if a and b then
+		return b==a:sub(-#b)
+	end
+end
+
+
+
+--
+-- pmstring.lua
+-- Additions to Lua's built-in pmstring functions.
 -- Copyright (c) 2002-2008 Jason Perkins and the Premake project
 --
 
 
 --
--- Returns an array of strings, each of which is a substring of s
+-- Returns an array of pmstrings, each of which is a subpmstring of s
 -- formed by splitting on boundaries formed by `pattern`.
 -- 
 
-	function string.explode(s, pattern, plain)
+	function pmstring.explode(s, pattern, plain)
 		if (pattern == '') then return false end
 		local pos = 0
 		local arr = { }
@@ -2658,10 +2922,10 @@ _WORKING_DIR		=lfs.currentdir()
 
 
 --
--- Find the last instance of a pattern in a string.
+-- Find the last instance of a pattern in a pmstring.
 --
 
-	function string.findlast(s, pattern, plain)
+	function pmstring.findlast(s, pattern, plain)
 		local curr = 0
 		repeat
 			local next = s:find(pattern, curr + 1, plain)
@@ -2678,278 +2942,76 @@ _WORKING_DIR		=lfs.currentdir()
 -- Returns true if `haystack` starts with the sequence `needle`.
 --
 
-	function string.startswith(haystack, needle)
+	function pmstring.startswith(haystack, needle)
 		return (haystack:find(needle, 1, true) == 1)
 	end
+end
+-- AMALGAMATE FILE HEAD : /src/host/string.lua
+
+
+local pmstring=require("puremake.string")
+
+for n,v in pairs(pmstring) do string[n]=string[n] or v end
+
+
+
+for n,v in pairs(string) do print(n,v) end
+-- AMALGAMATE FILE TAIL : /src/host/string.lua
+-- AMALGAMATE FILE HEAD : /src/host/path.lua
+
+path=require("puremake.path")
+-- AMALGAMATE FILE TAIL : /src/host/path.lua
+-- AMALGAMATE FILE HEAD : /src/host/os.lua
+
+local pmos=require("puremake.os")
+
+for n,v in pairs(pmos) do os[n]=os[n] or v end
+-- AMALGAMATE FILE TAIL : /src/host/os.lua
+-- AMALGAMATE FILE HEAD : /src/host/premake.lua
+
+-- we really need LFS
+lfs=require("lfs_any")
+
+
+premake=premake or {}
+
+	
+_PREMAKE_COPYRIGHT	="Copyright (C) 2002-2015 Jason Perkins and the Premake Project"
+_PREMAKE_VERSION	="4.0.0-puremake"
+_PREMAKE_URL		="https://github.com/xriss/puremake"
+_OS					="other"
+
+-- jit knows the OS, but it might need tweaking to fit what names premake uses
+if jit then
+	_OS=string.lower(jit.os)
+end
+
+_USER_HOME_DIR		=os.getenv("HOME")
+_WORKING_DIR		=lfs.currentdir()
+
+
+-- AMALGAMATE FILE TAIL : /src/host/premake.lua
+-- AMALGAMATE FILE HEAD : /src/base/os.lua
+
+-- AMALGAMATE FILE TAIL : /src/base/os.lua
+-- AMALGAMATE FILE HEAD : /src/base/path.lua
+
+-- AMALGAMATE FILE TAIL : /src/base/path.lua
+-- AMALGAMATE FILE HEAD : /src/base/string.lua
+
 -- AMALGAMATE FILE TAIL : /src/base/string.lua
 -- AMALGAMATE FILE HEAD : /src/base/table.lua
---
--- table.lua
--- Additions to Lua's built-in table functions.
--- Copyright (c) 2002-2008 Jason Perkins and the Premake project
---
-	
 
---
--- Returns true if the table contains the specified value.
---
+local pmtable=require("puremake.table")
 
-	function table.contains(t, value)
-		for _,v in pairs(t) do
-			if (v == value) then
-				return true
-			end
-		end
-		return false
-	end
-	
-		
---
--- Enumerates an array of objects and returns a new table containing
--- only the value of one particular field.
---
+for n,v in pairs(pmtable) do table[n]=table[n] or v end
 
-	function table.extract(arr, fname)
-		local result = { }
-		for _,v in ipairs(arr) do
-			table.insert(result, v[fname])
-		end
-		return result
-	end
-	
-	
-
---
--- Flattens a hierarchy of tables into a single array containing all
--- of the values.
---
-
-	function table.flatten(arr)
-		local result = { }
-		
-		local function flatten(arr)
-			for _, v in ipairs(arr) do
-				if type(v) == "table" then
-					flatten(v)
-				else
-					table.insert(result, v)
-				end
-			end
-		end
-		
-		flatten(arr)
-		return result
-	end
-
-
---
--- Merges an array of items into a string.
---
-
-	function table.implode(arr, before, after, between)
-		local result = ""
-		for _,v in ipairs(arr) do
-			if (result ~= "" and between) then
-				result = result .. between
-			end
-			result = result .. before .. v .. after
-		end
-		return result
-	end
-
-
---
--- Inserts a value of array of values into a table. If the value is
--- itself a table, its contents are enumerated and added instead. So 
--- these inputs give these outputs:
---
---   "x" -> { "x" }
---   { "x", "y" } -> { "x", "y" }
---   { "x", { "y" }} -> { "x", "y" }
---
-
-	function table.insertflat(tbl, values)
-		if type(values) == "table" then
-			for _, value in ipairs(values) do
-				table.insertflat(tbl, value)
-			end
-		else
-			table.insert(tbl, values)
-		end
-	end
-
-
---
--- Returns true if the table is empty, and contains no indexed or keyed values.
---
-
-	function table.isempty(t)
-		return next(t) == nil
-	end
-
-
---
--- Adds the values from one array to the end of another and
--- returns the result.
---
-
-	function table.join(...)
-		local result = { }
-		for _,t in ipairs({...}) do
-			if type(t) == "table" then
-				for _,v in ipairs(t) do
-					table.insert(result, v)
-				end
-			else
-				table.insert(result, t)
-			end
-		end
-		return result
-	end
-
-
---
--- Return a list of all keys used in a table.
---
-
-	function table.keys(tbl)
-		local keys = {}
-		for k, _ in pairs(tbl) do
-			table.insert(keys, k)
-		end
-		return keys
-	end
-
-
---
--- Adds the key-value associations from one table into another
--- and returns the resulting merged table.
---
-
-	function table.merge(...)
-		local result = { }
-		for _,t in ipairs({arg}) do
-			if type(t) == "table" then
-				for k,v in pairs(t) do
-					result[k] = v
-				end
-			else
-				error("invalid value")
-			end
-		end
-		return result
-	end
-	
-
-
---
--- Translates the values contained in array, using the specified
--- translation table, and returns the results in a new array.
---
-
-	function table.translate(arr, translation)
-		local result = { }
-		for _, value in ipairs(arr) do
-			local tvalue
-			if type(translation) == "function" then
-				tvalue = translation(value)
-			else
-				tvalue = translation[value]
-			end
-			if (tvalue) then
-				table.insert(result, tvalue)
-			end
-		end
-		return result
-	end
-	
-		
 -- AMALGAMATE FILE TAIL : /src/base/table.lua
 -- AMALGAMATE FILE HEAD : /src/base/io.lua
---
--- io.lua
--- Additions to the I/O namespace.
--- Copyright (c) 2008-2009 Jason Perkins and the Premake project
---
 
+local pmio = require("puremake.io")
 
---
--- Prepare to capture the output from all subsequent calls to io.printf(), 
--- used for automated testing of the generators.
---
-
-	function io.capture()
-		io.captured = ''
-	end
-	
-	
-	
---
--- Returns the captured text and stops capturing.
---
-
-	function io.endcapture()
-		local captured = io.captured
-		io.captured = nil
-		return captured
-	end
-	
-	
---
--- Open an overload of the io.open() function, which will create any missing
--- subdirectories in the filename if "mode" is set to writeable.
---
-
-	local builtin_open = io.open
-	function io.open(fname, mode)
-		if (mode) then
-			if (mode:find("w")) then
-				local dir = path.getdirectory(fname)
-				ok, err = os.mkdir(dir)
-				if (not ok) then
-					error(err, 0)
-				end
-			end
-		end
-		return builtin_open(fname, mode)
-	end
-
-
-
--- 
--- A shortcut for printing formatted output to an output stream.
---
-
-	function io.printf(msg, ...)
-		if not io.eol then
-			io.eol = "\n"
-		end
-
-		if not io.indent then
-			io.indent = "\t"
-		end
-
-		if type(msg) == "number" then
-			s = string.rep(io.indent, msg) .. string.format(...)
-		else
-			s = string.format(msg,...)
-		end
-		
-		if io.captured then
-			io.captured = io.captured .. s .. io.eol
-		else
-			io.write(s)
-			io.write(io.eol)
-		end
-	end
-
-
---
--- Because I use io.printf() so often in the generators, create a terse shortcut
--- for it. This saves me typing, and also reduces the size of the executable.
---
-
-	_p = io.printf
+for n,v in pairs(pmio) do io[n]=io[n] or v end
 -- AMALGAMATE FILE TAIL : /src/base/io.lua
 -- AMALGAMATE FILE HEAD : /src/base/globals.lua
 --

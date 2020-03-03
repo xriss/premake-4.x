@@ -29,7 +29,6 @@
 
 	function test.capture(expected)
 		local actual = io.endcapture()
-
 		local ait = actual:gmatch("(.-)" .. io.eol)
 		local eit = expected:gmatch("(.-)\n")
 

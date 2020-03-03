@@ -1,22 +1,5 @@
 
-string=string or {}
 
+local pmstring=require("puremake.string")
 
-string.startswith=function(a,b)
-
---	os.print("FUNCTION","string."..debug.getinfo(1).name,a,b,b==a:sub(1,#b))
-	
-	if a and b then
-		return b==a:sub(1,#b)
-	end
-	
-end
-
-string.endswith=function(a,b)
-
---	os.print("FUNCTION","string."..debug.getinfo(1).name,a,b,b==a:sub(-#b))
-
-	if a and b then
-		return b==a:sub(-#b)
-	end
-end
+for n,v in pairs(pmstring) do string[n]=string[n] or v end
