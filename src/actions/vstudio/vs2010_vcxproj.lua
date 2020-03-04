@@ -79,7 +79,7 @@
 		_p(2,'<UseDebugLibraries>%s</UseDebugLibraries>', iif(optimisation(cfg) == "Disabled","true","false"))
 		_p(2,'<CharacterSet>%s</CharacterSet>',iif(cfg.flags.Unicode,"Unicode","MultiByte"))
 
-		local toolsets = { vs2012 = "v110", vs2013 = "v120", vs2015 = "v140" }
+		local toolsets = { vs2012 = "v110", vs2013 = "v120" , vs2015 = "v140" }
 		local toolset = toolsets[_ACTION]
 		if toolset then
 			_p(2,'<PlatformToolset>%s</PlatformToolset>', toolset)
@@ -561,8 +561,6 @@
 --
 
 	function vc2010.header(targets)
-		local action = premake.action.current()
-
 		io.eol = "\r\n"
 		_p('<?xml version="1.0" encoding="utf-8"?>')
 
@@ -571,12 +569,7 @@
 			t = ' DefaultTargets="' .. targets .. '"'
 		end
 
-		local tv = ''
-		if action.vstudio.toolsVersion then
-			tv = string.format(' ToolsVersion="%s"', action.vstudio.toolsVersion)
-		end
-
-		_p('<Project%s%s xmlns="http://schemas.microsoft.com/developer/msbuild/2003">', t, tv)
+		_p('<Project%s ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">', t)
 	end
 
 
