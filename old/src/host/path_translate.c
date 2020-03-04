@@ -43,7 +43,7 @@ int path_translate(lua_State* L)
 		lua_newtable(L);
 		lua_pushnil(L);
 		while (lua_next(L, 1)) {
-			const char* value = luaL_checkstring(L, 4);
+			const char* value = luaL_checkstring(L, -1);
 			translate(buffer, value, sep[0]);
 			lua_pop(L, 1);
 
