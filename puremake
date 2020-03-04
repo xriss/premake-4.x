@@ -1457,116 +1457,7 @@ _M.unicode_errors = false
 
 return _M
 end
-package.preload["puremake.io"] = function (...)
-
-
-local M={} ; package.loaded[(...)]=M ; M.module_name=(...)
-setmetatable(M,{__index=io}) -- use io as prototype
-local pmio=M
-
-
-
---
--- pmio.lua
--- Additpmions to the I/O namespace.
--- Copyright (c) 2008-2009 Jason Perkins and the Premake project
---
-
-
---
--- Prepare to capture the output from all subsequent calls to pmio.printf(), 
--- used for automated testing of the generators.
---
-
-	function pmio.capture()
-		pmio.captured = ''
-	end
-	
-	
-	
---
--- Returns the captured text and stops capturing.
---
-
-	function pmio.endcapture()
-		local captured = pmio.captured
-		pmio.captured = nil
-		return captured
-	end
-	
-	
---
--- Open an overload of the pmio.open() function, which will create any missing
--- subdirectories in the filename if "mode" is set to writeable.
---
-
-	local builtin_open = pmio.open
-	function pmio.open(fname, mode)
-		if (mode) then
-			if (mode:find("w")) then
-				local dir = path.getdirectory(fname)
-				ok, err = os.mkdir(dir)
-				if (not ok) then
-					error(err, 0)
-				end
-			end
-		end
-		return builtin_open(fname, mode)
-	end
-
-
-
--- 
--- A shortcut for printing formatted output to an output stream.
---
-
-	function pmio.printf(msg, ...)
-		if not pmio.eol then
-			pmio.eol = "\n"
-		end
-
-		if not pmio.indent then
-			pmio.indent = "\t"
-		end
-
-		if type(msg) == "number" then
-			s = string.rep( (io.indent or pmio.indent) , msg) .. string.format(...)
-		else
-			s = string.format(msg,...)
-		end
-		
-		if pmio.captured then
-			pmio.captured = pmio.captured .. s .. (io.eol or pmio.eol)
-		else
-			pmio.write(s)
-			pmio.write((io.eol or pmio.eol))
-		end
-	end
-
-
---
--- Because I use pmio.printf() so often in the generators, create a terse shortcut
--- for it. This saves me typing, and also reduces the size of the executable.
---
-
-	_p = pmio.printf
-end
-package.preload["puremake.path"] = function (...)
-
-
-
-local pmstring=require("puremake.string")
-local pmos=require("puremake.os")
-
-
-local M={} ; package.loaded[(...)]=M ; M.module_name=(...)
-local path=M
-
-
-
-
-
-
+package.preload["wetgenes.path"] = function (...)
 --
 -- (C) 2020 Kriss@XIXs.com and released under the MIT license,
 -- see http://opensource.org/licenses/MIT for full license text.
@@ -1581,10 +1472,10 @@ Manage file paths under linux or windows, so we need to deal with \ or
 	local wpath=require("wetgenes.path")
 
 ]]
-local wpath={}
+local M={} ; package.loaded[(...)]=M ; local wpath=M
 
 -- a soft require of lfs so lfs can be nil
-local lfs=select(2,pcall( function() return require("lfs_any") end ))
+local lfs=select(2,pcall( function() return require("lfs") end ))
 
 
 --[[#lua.wetgenes.path.setup
@@ -1627,14 +1518,15 @@ wpath.setup=function(flavour)
 		wpath.root="/"
 		wpath.separator="/"
 		wpath.delimiter=";"
-		wpath.winhax=false
-	
-	end
+		wpath.winhax=true
+		
+-- always enable winhax by default, so we can hack around with windows style paths
+-- we should make sure that we are always windows safe
 
+	end
 
 end
 wpath.setup()
-wpath.winhax=true -- always need winhax
 
 
 
@@ -1763,6 +1655,7 @@ remove ".." and "." components from the path string
 
 ]]
 wpath.normalize=function(p)
+
 	local pp=wpath.parse(p) -- we need to know if path contains a root
 	local ps=wpath.split(p)
 	
@@ -1781,7 +1674,7 @@ wpath.normalize=function(p)
 		if ps[idx]=="." then -- just remove this one, no need to advance
 			table.remove(ps,idx)
 		elseif ps[idx]==".." then -- remove this and the previous one if we can
-			if idx>( ( pp.root or p:sub(1,1)=="$" ) and 2 or 1) then -- can we remove previous part
+			if idx>(pp.root and 2 or 1) then -- can we remove previous part
 				idx=idx-1
 				table.remove(ps,idx)
 				table.remove(ps,idx)
@@ -1793,8 +1686,6 @@ wpath.normalize=function(p)
 			idx=idx+1
 		end
 	end
-
---print("N",p,wpath.join(ps))
 
 	return wpath.join(ps)
 end
@@ -1835,7 +1726,7 @@ wpath.resolve=function(...)
 
 	local p=wpath.join(...)
 
-	if wpath.parse(p).root or p:sub(1,1)=="$" then -- already absolute
+	if wpath.parse(p).root then -- already absolute
 		return wpath.normalize(p) -- just normalize
 	end
 	
@@ -1867,7 +1758,7 @@ wpath.relative=function(pa,pb)
 			break
 		end
 	end
-	
+
 	if match==1 or ( match==2 and a[1]=="" )  then -- no match
 		return pb -- just return full path
 	end
@@ -1891,7 +1782,112 @@ If called repeatedly, then eventually we will return wpath.root
 wpath.parent=function(...)
 	return wpath.resolve(...,"..","")
 end
+end
+package.preload["puremake.io"] = function (...)
 
+
+local M={} ; package.loaded[(...)]=M ; M.module_name=(...)
+setmetatable(M,{__index=io}) -- use io as prototype
+local pmio=M
+
+
+
+--
+-- pmio.lua
+-- Additpmions to the I/O namespace.
+-- Copyright (c) 2008-2009 Jason Perkins and the Premake project
+--
+
+
+--
+-- Prepare to capture the output from all subsequent calls to pmio.printf(), 
+-- used for automated testing of the generators.
+--
+
+	function pmio.capture()
+		pmio.captured = ''
+	end
+	
+	
+	
+--
+-- Returns the captured text and stops capturing.
+--
+
+	function pmio.endcapture()
+		local captured = pmio.captured
+		pmio.captured = nil
+		return captured
+	end
+	
+	
+--
+-- Open an overload of the pmio.open() function, which will create any missing
+-- subdirectories in the filename if "mode" is set to writeable.
+--
+
+	local builtin_open = pmio.open
+	function pmio.open(fname, mode)
+		if (mode) then
+			if (mode:find("w")) then
+				local dir = path.getdirectory(fname)
+				ok, err = os.mkdir(dir)
+				if (not ok) then
+					error(err, 0)
+				end
+			end
+		end
+		return builtin_open(fname, mode)
+	end
+
+
+
+-- 
+-- A shortcut for printing formatted output to an output stream.
+--
+
+	function pmio.printf(msg, ...)
+		if not pmio.eol then
+			pmio.eol = "\n"
+		end
+
+		if not pmio.indent then
+			pmio.indent = "\t"
+		end
+
+		if type(msg) == "number" then
+			s = string.rep( (io.indent or pmio.indent) , msg) .. string.format(...)
+		else
+			s = string.format(msg,...)
+		end
+		
+		if pmio.captured then
+			pmio.captured = pmio.captured .. s .. (io.eol or pmio.eol)
+		else
+			pmio.write(s)
+			pmio.write((io.eol or pmio.eol))
+		end
+	end
+
+
+--
+-- Because I use pmio.printf() so often in the generators, create a terse shortcut
+-- for it. This saves me typing, and also reduces the size of the executable.
+--
+
+	_p = pmio.printf
+end
+package.preload["puremake.path"] = function (...)
+
+
+local wpath=require("wetgenes.path")
+
+local pmstring=require("puremake.string")
+local pmos=require("puremake.os")
+
+
+local M={} ; package.loaded[(...)]=M ; M.module_name=(...)
+local path=M
 
 
 path.getrelative=function(a,b)
@@ -1908,7 +1904,12 @@ end
 
 path.getabsolute=function(p)
 
-	local r=wpath.resolve(p)
+	local r
+	if p:sub(1,1)=="$" then
+		r=wpath.normalize(p)
+	else
+		r=wpath.resolve(p)
+	end
 	
 	if r:sub(1,2)=="./" then r=r:sub(3) end
 	if r:sub(-1)=="/" then r=r:sub(1,-2) end
