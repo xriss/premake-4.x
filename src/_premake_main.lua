@@ -4,7 +4,7 @@
 -- Copyright (c) 2002-2011 Jason Perkins and the Premake project
 --
 
-	local lfs = require("lfs")
+	local lfs = require("lfs_any")
 
 	local scriptfile    = "premake4.lua"
 	local shorthelp     = "Type 'puremake --help' for help"
