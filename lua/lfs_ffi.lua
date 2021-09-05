@@ -59,7 +59,7 @@ local _M = {
 }
 
 -- common utils/constants
-local IS_64_BIT = ffi.abi('64bit')
+local IS_64_BIT = io.popen and io.popen('getconf LONG_BIT','r'):read('*a')=="64\n" or ffi.abi('64bit')
 local ERANGE = 'Result too large'
 
 if not pcall(ffi.typeof, "ssize_t") then
