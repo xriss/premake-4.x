@@ -3,8 +3,8 @@
 
 for i,v in ipairs{
 
-	"lfs_ffi",
 	"lfs",
+	"lfs_ffi",
 
 } do
 
